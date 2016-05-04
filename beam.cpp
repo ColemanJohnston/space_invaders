@@ -89,10 +89,11 @@ void Beam::shoot(int startX, int startY,int velocity)
 void Beam::destroy()
 {
     mPosY = SCREEN_HEIGHT - 1;
-    mposX = SCREEN_WIDTH - 1;
+    mPosX = SCREEN_WIDTH - 1;
     mCollider.y = mPosY;
     mCollider.x = mPosX;
     isMoving = false;
     mCollider.w = 0;
     mCollider.h = 0;
+    mVelY = 0;
 }

@@ -16,6 +16,7 @@ Ship::Ship()
     mCollider.h = SHIP_HEIGHT;
     mCollider.x = mPosX;
     mCollider.y = mPosY;
+    isShowing = true;
 
     //Initialize the velocity
     mVelX = 0; 
@@ -38,6 +39,7 @@ Ship::Ship(SDL_Renderer* renderer)//do NOT try to run default constructor
     mCollider.h = SHIP_HEIGHT;
     mCollider.x = mPosX;
     mCollider.y = mPosY;
+    isShowing = true;
 
     beam.setRenderer(renderer);
 
@@ -93,13 +95,17 @@ SDL_Rect Ship::getShipCollisionBox()
 
 SDL_Rect Ship::getBeamBox()
 {
-    Beam.getCollisionBox();
+    beam.getCollisionBox();
 }
 
 void Ship::render()
 {
     //Show the ship
-	SDL_RenderCopy(renderer, texture, 0, &mCollider);
+	if(isShowing)
+    {
+        SDL_RenderCopy(renderer, texture, 0, &mCollider);
+    }
+
     beam.render();
 }
 
@@ -111,4 +117,16 @@ void Ship::setRenderer(SDL_Renderer* renderer)
     texture = SDL_CreateTextureFromSurface(renderer,surface);
     SDL_FreeSurface(surface);
     beam.setRenderer(renderer);
+}
+
+void Ship::destroy()
+{
+    mCollider.x = 0;
+    mCollider.y = 0;
+    mCollider.w = 0;
+    mCollider.h = 0;
+    mPosX = 0;
+    mPosY = 0;
+    isShowing = false;
+    mVelX = 0;
 }
