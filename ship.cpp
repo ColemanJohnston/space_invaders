@@ -86,6 +86,11 @@ void Ship::move()
     beam.move();
 }
 
+SDL_Rect Ship::getShipCollisionBox()
+{
+    return mCollider;
+}
+
 void Ship::render()
 {
     //Show the ship
