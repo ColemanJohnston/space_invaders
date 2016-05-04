@@ -56,12 +56,7 @@ void Beam::move()
         //If the ship collided or went too far to the left or right
         if( mPosY < 0 )
         {
-            //Move back
-            mPosY -= mVelY;
-    		mCollider.y = mPosY;
-            isMoving = false;
-            mCollider.w = 0;
-            mCollider.h = 0;
+            destroy();
         }
     }
 }
@@ -89,4 +84,15 @@ void Beam::shoot(int startX, int startY,int velocity)
         mVelY = velocity;
         isMoving = true;
     }
+}
+
+void Beam::destroy()
+{
+    mPosY = SCREEN_HEIGHT - 1;
+    mposX = SCREEN_WIDTH - 1;
+    mCollider.y = mPosY;
+    mCollider.x = mPosX;
+    isMoving = false;
+    mCollider.w = 0;
+    mCollider.h = 0;
 }
