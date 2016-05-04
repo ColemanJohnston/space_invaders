@@ -91,6 +91,11 @@ SDL_Rect Ship::getShipCollisionBox()
     return mCollider;
 }
 
+SDL_Rect Ship::getBeamBox()
+{
+    Beam.getCollisionBox();
+}
+
 void Ship::render()
 {
     //Show the ship
