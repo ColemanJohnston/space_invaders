@@ -32,6 +32,7 @@ class Ship
 		//Moves the dot and checks collision
 		void move();
 		SDL_Rect getShipCollisionBox();
+		SDL_Rect getBeamBox();
 
 		//Shows the ship on the screen
 		void render();
