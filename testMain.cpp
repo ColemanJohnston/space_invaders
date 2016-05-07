@@ -123,7 +123,7 @@ int main( int argc, char* args[] )
 			}
 		}
 		
-		
+		#include <string>
 
 		/*
 		void setRender(SDL_Renderer* renderer)

@@ -7,12 +7,10 @@
 
 enemyShip::enemyShip():Ship()
 {
-
 	mPosX = 0;
 	mPosY = 0;
 	mCollider.x = mPosX;
 	mCollider.y = mPosY;
-
 	mVelX = 2;	
 }
 enemyShip::enemyShip(SDL_Renderer* renderer) : Ship(renderer)
@@ -21,7 +19,6 @@ enemyShip::enemyShip(SDL_Renderer* renderer) : Ship(renderer)
 	mPosY = 0;
 	mCollider.x = mPosX;
 	mCollider.y = mPosY;
-
 	mVelX = 2;
 } 
 
@@ -48,7 +45,6 @@ void enemyShip::move()
         //Move back
         mPosX -= mVelX;
 		mCollider.x = mPosX;
-
 		mVelX *= -1;
 		mPosY += 5;
 		mCollider.y += 5;
@@ -58,7 +54,6 @@ void enemyShip::move()
 void enemyShip::setRenderer(SDL_Renderer* renderer)
 {
     this->renderer = renderer;
-
     SDL_Surface* surface = IMG_Load("./redChip.png");
     texture = SDL_CreateTextureFromSurface(renderer,surface);
     SDL_FreeSurface(surface);
