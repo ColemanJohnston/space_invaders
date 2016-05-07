@@ -17,14 +17,6 @@ public:
 	void setY(int y);
 	void setRenderer(SDL_Renderer* renderer);
 };
-
-/*class enemyShipGrid
-{
-public:
-	enemyShip enemies[Ship::SHIP_WIDTH][Ship::SHIP_HEIGHT];
-
-};
-*/
 #endif
 
 

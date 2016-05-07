@@ -93,7 +93,7 @@ SDL_Rect Ship::getShipCollisionBox()
 
 SDL_Rect Ship::getBeamBox()
 {
-    Beam.getCollisionBox();
+    beam.getCollisionBox();
 }
 
 void Ship::render()

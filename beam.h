@@ -35,6 +35,10 @@ class Beam
 		//shoot the beam
 		void shoot(int startX, int startY, int velocity);
 
+		void destroy();
+
+		SDL_Rect getCollisionBox()const {return mCollider;}
+
     private:
 		
 		bool isMoving;
