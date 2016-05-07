@@ -12,7 +12,7 @@ class enemyShip : public Ship
 public:
 	enemyShip(SDL_Renderer* renderer);
 	enemyShip();
-	void move();
+	void move(enemyShip arr[][10]);
 	void setX(int x);
 	void setY(int y);
 	void setRenderer(SDL_Renderer* renderer);

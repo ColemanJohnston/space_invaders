@@ -35,7 +35,7 @@ void enemyShip::setY(int y)
 	this->mCollider.y = y;
 }
 
-void enemyShip::move()
+void enemyShip::move(enemyShip arr[][10])
 {
     //Move the ship left or right
     mPosX += mVelX;
@@ -45,12 +45,25 @@ void enemyShip::move()
     if( ( mPosX < 0 ) || ( mPosX + SHIP_WIDTH > SCREEN_WIDTH ) )
     {
         //Move back
+		for(int i = 0; i < 10; i++)
+		{
+			for(int j = 0; j < 10; j++)
+			{
+				arr[i][j].mPosX -= mVelX;
+				arr[i][j].mCollider.x = mPosX;
+				arr[i][j].mVelX *= -1;
+				arr[i][j].mPosY += 20;
+				arr[i][j].mCollider.y += 20;
+			}
+		}
+/*
         mPosX -= mVelX;
 		mCollider.x = mPosX;
 
 		mVelX *= -1;
 		mPosY += 20;
 		mCollider.y += 20;
+		*/
     }
     beam.move();
 }

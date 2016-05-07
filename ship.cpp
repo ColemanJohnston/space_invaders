@@ -57,7 +57,9 @@ void Ship::handleEvent( SDL_Event& e )
         {
             case SDLK_LEFT: mVelX -= SHIP_VEL; break;
             case SDLK_RIGHT: mVelX += SHIP_VEL; break;
-            case SDLK_SPACE: beam.shoot(mPosX + 8,mPosY,-10); break;
+            case SDLK_SPACE: 
+            if(isShowing)
+                beam.shoot(mPosX + 8,mPosY,-10); break;
         }
      }
     //If a key was released
@@ -121,12 +123,12 @@ void Ship::setRenderer(SDL_Renderer* renderer)
 
 void Ship::destroy()
 {
-    mCollider.x = 0;
-    mCollider.y = 0;
+   // mCollider.x = 0;
+   // mCollider.y = 0;
     mCollider.w = 0;
     mCollider.h = 0;
-    mPosX = 0;
-    mPosY = 0;
+    //mPosX = 0;
+    //mPosY = 0;
     isShowing = false;
-    mVelX = 0;
+   // mVelX = 0;
 }

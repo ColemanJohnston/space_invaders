@@ -1,6 +1,5 @@
 /*This source code copyrighted by Lazy Foo' Productions (2004-2015)
 and may not be redistributed without written permission.*/
-
 //Using SDL, SDL_image, standard IO, and strings
 #include "ship.h"
 #include "enemyShip.h"
@@ -151,7 +150,7 @@ int main( int argc, char* args[] )
 				}
 
 				//Handle input for the dot
-				titanic.handleEvent( e );
+				titanic.handleEvent(e);
 			}
 
 			//Move the ship and check collision
@@ -161,7 +160,7 @@ int main( int argc, char* args[] )
 			{
 				for(int j = 0; j < 10; j++)
 				{
-					enemies[i][j].move();
+					enemies[i][j].move(enemies);
 				}
 			}
 			//Clear screen
