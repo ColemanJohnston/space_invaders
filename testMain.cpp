@@ -8,6 +8,10 @@ and may not be redistributed without written permission.*/
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
 #include <string>
+#include <iostream>
+#include <time.h>
+#include <cstdlib>
+using namespace std;
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 640;
@@ -96,6 +100,7 @@ void close()
 
 int main( int argc, char* args[] )
 {
+	srand ((unsigned)time(0));
 	//Start up SDL and create window
 	if( !init() )
 	{
@@ -112,10 +117,10 @@ int main( int argc, char* args[] )
 		//The dot that will be moving around on the screen
 		Ship titanic(gRenderer);
 
-		enemyShip enemies[3][4];
-		for(int i = 0; i < 3; i++)
+		enemyShip enemies[10][10];
+		for(int i = 0; i < 10; i++)
 		{
-			for(int j = 0; j < 4; j++)
+			for(int j = 0; j < 10; j++)
 			{
 				enemies[i][j].setRenderer(gRenderer);
 				enemies[i][j].setX(j * 30);
@@ -152,9 +157,9 @@ int main( int argc, char* args[] )
 			//Move the ship and check collision
 			titanic.move();
 			
-			for(int i = 0; i < 3; i++)
+			for(int i = 0; i < 10; i++)
 			{
-				for(int j = 0; j < 4; j++)
+				for(int j = 0; j < 10; j++)
 				{
 					enemies[i][j].move();
 				}
@@ -162,16 +167,42 @@ int main( int argc, char* args[] )
 			//Clear screen
 			SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 			SDL_RenderClear( gRenderer );
+			int r;
+			int c;
 
-			//Render wall
-			SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0xFF );		
-			
+			SDL_Rect enemyBeam;
+			if(rand() % 121 == 0)
+			{
+				do
+				{
+					r = rand() % 10;
+					c = rand() % 10;
+				}while(!enemies[r][c].shoot());
+			}		
+			//TODO: Fix beam collision into player ship.
+			SDL_Rect shipCollisionBox = titanic.getShipCollisionBox();
+			SDL_Rect tempBeamBox = titanic.getBeamBox();
 			//Render ship
 			titanic.render();
-			for(int i = 0; i < 3; i++)
+			for(int i = 0; i < 10; i++)
 			{
-				for(int j = 0; j < 4; j++)
+				for(int j = 0; j < 10; j++)
 				{
+					
+					SDL_Rect tempEnemyBox = enemies[i][j].getShipCollisionBox();
+					enemyBeam = enemies[i][j].getBeamBox();
+
+					if(SDL_HasIntersection(&tempBeamBox,&tempEnemyBox))
+					{
+						enemies[i][j].destroy();
+						titanic.resetBeam();
+					}
+					if(SDL_HasIntersection(&enemyBeam,&shipCollisionBox))
+					{
+						cout << "destroyed\n";
+						titanic.destroy();
+						enemies[i][j].resetBeam();
+					}
 					enemies[i][j].render();
 				}
 			}

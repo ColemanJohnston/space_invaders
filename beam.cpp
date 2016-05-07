@@ -8,12 +8,12 @@
 Beam::Beam()
 {
     //Initialize the offsets
-    mPosX = SCREEN_WIDTH / 2;
-    mPosY = SCREEN_HEIGHT - 25;
+    mPosX = 0;
+    mPosY = 0;
 
     //Set collision box dimension
-    mCollider.w = BEAM_WIDTH;
-    mCollider.h = BEAM_HEIGHT;
+    mCollider.w = 0;
+    mCollider.h = 0;
     mCollider.x = mPosX;
     mCollider.y = mPosY;
     isMoving = false;
@@ -54,7 +54,7 @@ void Beam::move()
     	mCollider.y = mPosY;
 
         //If the ship collided or went too far to the left or right
-        if( mPosY < 0 )
+        if( mPosY < 0  || mPosY > SCREEN_HEIGHT)
         {
             destroy();
         }

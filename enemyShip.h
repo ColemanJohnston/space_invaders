@@ -16,6 +16,7 @@ public:
 	void setX(int x);
 	void setY(int y);
 	void setRenderer(SDL_Renderer* renderer);
+    bool shoot();
 };
 
 /*class enemyShipGrid

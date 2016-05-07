@@ -41,6 +41,8 @@ class Ship
 
 		void destroy();
 
+		void resetBeam(){beam.destroy();}
+
     protected:
 		//ship needs the renderer from the rest of the class in order to be able to render itself 
 		SDL_Renderer* renderer;
@@ -60,7 +62,5 @@ class Ship
 
 		//render the picture associated with the ship
 		SDL_Texture* texture;
-
-
 };
 #endif
