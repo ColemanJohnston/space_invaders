@@ -1,7 +1,8 @@
 #include "ship.h"
 #include "beam.h"
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h> 
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h> 
 #include <stdio.h>
 #include <string>
 
@@ -17,6 +18,8 @@ Ship::Ship()
     mCollider.x = mPosX;
     mCollider.y = mPosY;
     isShowing = true;
+    explosion_sound = Mix_LoadWAV( "./explosion.wav" );
+
 
     //Initialize the velocity
     mVelX = 0; 
@@ -29,6 +32,8 @@ Ship::Ship(SDL_Renderer* renderer)//do NOT try to run default constructor
     SDL_Surface* surface = IMG_Load("./ship.bmp");
     texture = SDL_CreateTextureFromSurface(renderer,surface);
     SDL_FreeSurface(surface);
+
+    explosion_sound = Mix_LoadWAV( "./explosion.wav" );
 
     //Initialize the offsets
     mPosX = SCREEN_WIDTH / 2;
@@ -123,12 +128,13 @@ void Ship::setRenderer(SDL_Renderer* renderer)
 
 void Ship::destroy()
 {
-   // mCollider.x = 0;
-   // mCollider.y = 0;
+    mCollider.x = 2;
+    mCollider.y = 2;
     mCollider.w = 0;
     mCollider.h = 0;
-    //mPosX = 0;
-    //mPosY = 0;
+    mPosX = 2;
+    mPosY = 2;
     isShowing = false;
-   // mVelX = 0;
+    mVelX = 0;
+    Mix_PlayChannel( -1, explosion_sound, 0 );
 }

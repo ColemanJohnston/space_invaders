@@ -1,6 +1,7 @@
 #include "beam.h"
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h> 
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h> 
 #include <stdio.h>
 #include <string>
 
@@ -17,6 +18,8 @@ Beam::Beam()
     mCollider.x = mPosX;
     mCollider.y = mPosY;
     isMoving = false;
+
+    laser_sound = Mix_LoadWAV( "./laser1.wav" );
 
     //Initialize the velocity
     mVelY = 0;       
@@ -36,6 +39,8 @@ Beam::Beam(SDL_Renderer* renderer)//do NOT try to run default constructor
     mCollider.x = mPosX;
     mCollider.y = mPosY;
     isMoving = false;
+
+    laser_sound = Mix_LoadWAV( "./laser1.wav" );
 
     //Initialize the velocity
     mVelY = 0;
@@ -83,6 +88,7 @@ void Beam::shoot(int startX, int startY,int velocity)
         mPosY = startY;
         mVelY = velocity;
         isMoving = true;
+        Mix_PlayChannel( -1, laser_sound, 0 );
     }
 }
 

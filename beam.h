@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h> 
+#include <SDL2/SDL_mixer.h>
 #include <stdio.h>
 #include <string>
 
@@ -23,6 +24,8 @@ class Beam
 		Beam(SDL_Renderer* renderer);//constructor needs the renderer in order to render itself to the screen and not have a global variable
 
 		Beam();
+
+		~Beam(){ Mix_FreeChunk( laser_sound ); }
 
 		void setRenderer(SDL_Renderer* renderer);
 
@@ -54,5 +57,7 @@ class Beam
 
 		//ship needs the renderer from the rest of the class in order to be able to render itself 
 		SDL_Renderer* renderer;
+
+		Mix_Chunk* laser_sound;
 };
 #endif
