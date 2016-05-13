@@ -1,7 +1,8 @@
 #include "ship.h"
 #include "beam.h"
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h> 
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h> 
 #include <stdio.h>
 #include <string>
 
@@ -16,6 +17,9 @@ Ship::Ship()
     mCollider.h = SHIP_HEIGHT;
     mCollider.x = mPosX;
     mCollider.y = mPosY;
+    isShowing = true;
+    explosion_sound = Mix_LoadWAV( "./explosion.wav" );
+    Mix_Volume(1,25);
 
     //Initialize the velocity
     mVelX = 0; 
@@ -29,6 +33,9 @@ Ship::Ship(SDL_Renderer* renderer)//do NOT try to run default constructor
     texture = SDL_CreateTextureFromSurface(renderer,surface);
     SDL_FreeSurface(surface);
 
+    explosion_sound = Mix_LoadWAV( "./explosion.wav" );
+    Mix_Volume(1,25);
+
     //Initialize the offsets
     mPosX = SCREEN_WIDTH / 2;
     mPosY = SCREEN_HEIGHT - 25;
@@ -38,6 +45,7 @@ Ship::Ship(SDL_Renderer* renderer)//do NOT try to run default constructor
     mCollider.h = SHIP_HEIGHT;
     mCollider.x = mPosX;
     mCollider.y = mPosY;
+    isShowing = true;
 
     beam.setRenderer(renderer);
 
@@ -55,7 +63,9 @@ void Ship::handleEvent( SDL_Event& e )
         {
             case SDLK_LEFT: mVelX -= SHIP_VEL; break;
             case SDLK_RIGHT: mVelX += SHIP_VEL; break;
-            case SDLK_SPACE: beam.shoot(mPosX + 8,mPosY,-10); break;
+            case SDLK_SPACE: 
+            if(isShowing)
+                beam.shoot(mPosX + 8,mPosY,-10); break;
         }
      }
     //If a key was released
@@ -99,7 +109,11 @@ SDL_Rect Ship::getBeamBox()
 void Ship::render()
 {
     //Show the ship
-	SDL_RenderCopy(renderer, texture, 0, &mCollider);
+	if(isShowing)
+    {
+        SDL_RenderCopy(renderer, texture, 0, &mCollider);
+    }
+
     beam.render();
 }
 
@@ -111,4 +125,20 @@ void Ship::setRenderer(SDL_Renderer* renderer)
     texture = SDL_CreateTextureFromSurface(renderer,surface);
     SDL_FreeSurface(surface);
     beam.setRenderer(renderer);
+    //
+    
+
+}
+
+void Ship::destroy()
+{
+    mCollider.x = 2;
+    mCollider.y = 2;
+    mCollider.w = 0;
+    mCollider.h = 0;
+    mPosX = 2;
+    mPosY = 2;
+    isShowing = false;
+    mVelX = 0;
+    Mix_PlayChannel( 1, explosion_sound, 0 );
 }

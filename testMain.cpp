@@ -4,10 +4,17 @@ and may not be redistributed without written permission.*/
 //Using SDL, SDL_image, standard IO, and strings
 #include "ship.h"
 #include "enemyShip.h"
+#include "barrier.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 #include <string>
+#include <iostream>
+#include <time.h>
+#include <cstdlib>
+using namespace std;
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 640;
@@ -23,6 +30,8 @@ void close();
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
 
+Mix_Music* gMusic;
+
 //The window renderer
 SDL_Renderer* gRenderer = NULL;
 
@@ -32,7 +41,7 @@ bool init()
 	bool success = true;
 
 	//Initialize SDL
-	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
+	if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO ) < 0 )
 	{
 		printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
 		success = false;
@@ -46,7 +55,7 @@ bool init()
 		}
 
 		//Create window
-		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+		gWindow = SDL_CreateWindow( "5PAc3 1Nvadderrrzzz", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 		if( gWindow == NULL )
 		{
 			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
@@ -73,6 +82,12 @@ bool init()
 					printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
 					success = false;
 				}
+				//Initialize SDL_mixer
+                if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+                {
+                    printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
+                    success = false;
+                }
 			}
 		}
 	}
@@ -88,14 +103,19 @@ void close()
 	SDL_DestroyWindow( gWindow );
 	gWindow = NULL;
 	gRenderer = NULL;
+	Mix_FreeMusic( gMusic );
+	gMusic = NULL;
 
 	//Quit SDL subsystems
 	IMG_Quit();
 	SDL_Quit();
+	Mix_Quit();
 }
 
 int main( int argc, char* args[] )
 {
+
+	srand ((unsigned)time(0));
 	//Start up SDL and create window
 	if( !init() )
 	{
@@ -112,28 +132,73 @@ int main( int argc, char* args[] )
 		//The dot that will be moving around on the screen
 		Ship titanic(gRenderer);
 
-		enemyShip enemies[3][4];
-		for(int i = 0; i < 3; i++)
+		enemyShip enemies[10][10];
+
+		//barrier
+		Barrier barrier1[10][10];
+		int XLocation = 100;
+		int Ylocation = 380;
+		for(int i = 0; i < 10; i++)
 		{
-			for(int j = 0; j < 4; j++)
+			for(int j = 0; j < 10; j++)
+			{
+				barrier1[i][j].setRenderer(gRenderer);
+				barrier1[i][j].setX(XLocation);
+				barrier1[i][j].setY(Ylocation);
+				Ylocation+=5;
+			}
+			Ylocation = 380;
+			XLocation+=5;
+		}
+		Barrier barrier2[10][10];
+		XLocation = 250;
+		for(int i = 0; i < 10; i++)
+		{
+			for(int j = 0; j < 10; j++)
+			{
+				barrier2[i][j].setRenderer(gRenderer);
+				barrier2[i][j].setX(XLocation);
+				barrier2[i][j].setY(Ylocation);
+				Ylocation+=5;
+			}
+			Ylocation = 380;
+			XLocation+=5;
+		}
+		Barrier barrier3[10][10];
+		XLocation = 400;
+		for(int i = 0; i < 10; i++)
+		{
+			for(int j = 0; j < 10; j++)
+			{
+				barrier3[i][j].setRenderer(gRenderer);
+				barrier3[i][j].setX(XLocation);
+				barrier3[i][j].setY(Ylocation);
+				Ylocation+=5;
+			}
+			Ylocation = 380;
+			XLocation+=5;
+		}
+
+		//Barrier barriers[3];
+		for(int i = 0; i < 10; i++)
+		{
+			for(int j = 0; j < 10; j++)
 			{
 				enemies[i][j].setRenderer(gRenderer);
 				enemies[i][j].setX(j * 30);
 				enemies[i][j].setY(i * 30);
 			}
 		}
-		
-		
 
-		/*
-		void setRender(SDL_Renderer* renderer)
-		{
-			this->renderer = renderer;
-		}
-		 		*/
-		//enemyShip enemy(gRenderer);
-		//enemyShip enemies[3][4];
-		//While application is running
+		//Load music
+	gMusic = Mix_LoadMUS( "./Back_to_the_place_PSG.wav" );
+	
+	Mix_PlayMusic( gMusic, -1 );
+	if( gMusic == NULL )
+	{
+		printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError() );
+	}
+
 		while( !quit )
 		{
 			//Handle events on queue
@@ -152,33 +217,132 @@ int main( int argc, char* args[] )
 			//Move the ship and check collision
 			titanic.move();
 			
-			for(int i = 0; i < 3; i++)
+			for(int i = 0; i < 10; i++)
 			{
-				for(int j = 0; j < 4; j++)
+				for(int j = 0; j < 10; j++)
 				{
-					enemies[i][j].move();
+					enemies[i][j].move(enemies);
 				}
 			}
 			//Clear screen
 			SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 			SDL_RenderClear( gRenderer );
+			int r;
+			int c;
 
-			//Render wall
-			SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0xFF );		
-			
+			if(rand() % 121 == 0)
+			{
+				do
+				{
+					r = rand() % 10;
+					c = rand() % 10;
+				}while(!enemies[r][c].shoot());
+			}				
+
+			//TODO: Fix beam collision into player ship.
+			SDL_Rect shipCollisionBox = titanic.getShipCollisionBox();
+			//SDL_Rect 
+			SDL_Rect tempBeamBox = titanic.getBeamBox();
+			SDL_Rect enemyBeam;
+			SDL_Rect barriersBox;
 			//Render ship
 			titanic.render();
-			for(int i = 0; i < 3; i++)
+			for(int i = 0; i < 10; i++)
 			{
-				for(int j = 0; j < 4; j++)
+				for(int j = 0; j < 10; j++)
 				{
+					
+					SDL_Rect tempEnemyBox = enemies[i][j].getShipCollisionBox();
+					enemyBeam = enemies[i][j].getBeamBox();
+					barriersBox = barrier1[i][j].getCollisionBox();
+					if(SDL_HasIntersection(&tempBeamBox, &barriersBox))
+					{
+						barrier1[i][j].destroy();
+						titanic.resetBeam();
+					}
+
+					barriersBox = barrier2[i][j].getCollisionBox();
+					if(SDL_HasIntersection(&tempBeamBox, &barriersBox))
+					{
+						barrier2[i][j].destroy();
+						titanic.resetBeam();
+					}
+
+					barriersBox = barrier3[i][j].getCollisionBox();
+					if(SDL_HasIntersection(&tempBeamBox, &barriersBox))
+					{
+						barrier3[i][j].destroy();
+						titanic.resetBeam();
+					}
+					for(int k = 0; k < 10; k++)
+					{
+						for(int l = 0; l < 10; l++)
+						{
+							barriersBox = barrier1[k][l].getCollisionBox();
+							if(SDL_HasIntersection(&enemyBeam, &barriersBox))
+							{
+								barrier1[k][l].destroy();
+								enemies[i][j].resetBeam();
+							}
+							barriersBox = barrier2[k][l].getCollisionBox();
+							if(SDL_HasIntersection(&enemyBeam, &barriersBox))
+							{
+								barrier2[k][l].destroy();
+								enemies[i][j].resetBeam();
+							}
+							barriersBox = barrier3[k][l].getCollisionBox();
+							if(SDL_HasIntersection(&enemyBeam, &barriersBox))
+							{
+								barrier3[k][l].destroy();
+								enemies[i][j].resetBeam();
+							}
+						}
+					}
+
+
+					if(SDL_HasIntersection(&tempBeamBox,&tempEnemyBox))
+					{
+						enemies[i][j].destroy();
+						titanic.resetBeam();
+					}
+					if(SDL_HasIntersection(&enemyBeam,&shipCollisionBox))
+					{
+						titanic.destroy();
+						enemies[i][j].resetBeam();
+					}
 					enemies[i][j].render();
 				}
 			}
 
+
 			//enemies[1][1].render();
+		for(int i = 0; i < 10; i++)
+		{
+			for(int j = 0; j < 10; j++)
+			{
+				barrier1[i][j].render();
+			}
+		}
+		for(int i = 0; i < 10; i++)
+		{
+			for(int j = 0; j < 10; j++)
+			{
+				barrier2[i][j].render();
+			}
+		}
+		for(int i = 0; i < 10; i++)
+		{
+			for(int j = 0; j < 10; j++)
+			{
+				barrier3[i][j].render();
+			}
+		}
+			//barriers[0].render();
+			//barriers[1].render();
+			//barriers[2].render();
 
 			//Update screen
+
 			SDL_RenderPresent( gRenderer );
 			
 		}

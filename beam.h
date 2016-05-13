@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h> 
+#include <SDL2/SDL_mixer.h>
 #include <stdio.h>
 #include <string>
 
@@ -12,7 +13,6 @@ class Beam
 		//The dimensions of the beam
 		static const int BEAM_WIDTH = 4;
 		static const int BEAM_HEIGHT = 8;
-		
 		static const int SCREEN_WIDTH = 640;//Coleman: make sure beam knows screen size
 		static const int SCREEN_HEIGHT = 480;//Coleman: make sure beam knows screen size 
 
@@ -23,6 +23,8 @@ class Beam
 		Beam(SDL_Renderer* renderer);//constructor needs the renderer in order to render itself to the screen and not have a global variable
 
 		Beam();
+
+		~Beam(){ Mix_FreeChunk( laser_sound ); }
 
 		void setRenderer(SDL_Renderer* renderer);
 
@@ -54,5 +56,7 @@ class Beam
 
 		//ship needs the renderer from the rest of the class in order to be able to render itself 
 		SDL_Renderer* renderer;
+
+		Mix_Chunk* laser_sound;
 };
 #endif
