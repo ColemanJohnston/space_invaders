@@ -3,6 +3,8 @@
 
 #include "beam.h"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h> 
 #include <stdio.h>
 #include <string>
 
@@ -23,7 +25,7 @@ class Ship
 		Ship();
 		Ship(SDL_Renderer* renderer);//constructor needs the renderer in order to render itself to the screen and not have a global variable
 
-		~Ship(){SDL_DestroyTexture(texture);}
+		~Ship(){SDL_DestroyTexture(texture); Mix_FreeChunk( explosion_sound );}
 
 		//Takes key presses and adjusts the ship's velocity
 		void handleEvent( SDL_Event& e );
@@ -45,6 +47,8 @@ class Ship
     protected:
 		//ship needs the renderer from the rest of the class in order to be able to render itself 
 		SDL_Renderer* renderer;
+
+		Mix_Chunk* explosion_sound; 
 
 		//The X and Y offsets of the ship
 		int mPosX, mPosY;

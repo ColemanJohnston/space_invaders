@@ -1,11 +1,14 @@
 /*This source code copyrighted by Lazy Foo' Productions (2004-2015)
 and may not be redistributed without written permission.*/
+
 //Using SDL, SDL_image, standard IO, and strings
 #include "ship.h"
 #include "enemyShip.h"
 #include "barrier.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 #include <string>
 #include <iostream>
@@ -27,6 +30,8 @@ void close();
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
 
+Mix_Music* gMusic;
+
 //The window renderer
 SDL_Renderer* gRenderer = NULL;
 
@@ -36,7 +41,7 @@ bool init()
 	bool success = true;
 
 	//Initialize SDL
-	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
+	if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO ) < 0 )
 	{
 		printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
 		success = false;
@@ -50,7 +55,7 @@ bool init()
 		}
 
 		//Create window
-		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+		gWindow = SDL_CreateWindow( "5PAc3 1Nvadderrrzzz", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 		if( gWindow == NULL )
 		{
 			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
@@ -77,6 +82,12 @@ bool init()
 					printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
 					success = false;
 				}
+				//Initialize SDL_mixer
+                if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+                {
+                    printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
+                    success = false;
+                }
 			}
 		}
 	}
@@ -92,14 +103,18 @@ void close()
 	SDL_DestroyWindow( gWindow );
 	gWindow = NULL;
 	gRenderer = NULL;
+	Mix_FreeMusic( gMusic );
+	gMusic = NULL;
 
 	//Quit SDL subsystems
 	IMG_Quit();
 	SDL_Quit();
+	Mix_Quit();
 }
 
 int main( int argc, char* args[] )
 {
+
 	srand ((unsigned)time(0));
 	//Start up SDL and create window
 	if( !init() )
@@ -174,18 +189,16 @@ int main( int argc, char* args[] )
 				enemies[i][j].setY(i * 30);
 			}
 		}
-		
-		
 
-		/*
-		void setRender(SDL_Renderer* renderer)
-		{
-			this->renderer = renderer;
-		}
-		 		*/
-		//enemyShip enemy(gRenderer);
-		//enemyShip enemies[3][4];
-		//While application is running
+		//Load music
+	gMusic = Mix_LoadMUS( "./Back_to_the_place_PSG.wav" );
+	
+	Mix_PlayMusic( gMusic, -1 );
+	if( gMusic == NULL )
+	{
+		printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError() );
+	}
+
 		while( !quit )
 		{
 			//Handle events on queue
@@ -198,7 +211,7 @@ int main( int argc, char* args[] )
 				}
 
 				//Handle input for the dot
-				titanic.handleEvent(e);
+				titanic.handleEvent( e );
 			}
 
 			//Move the ship and check collision
@@ -294,7 +307,6 @@ int main( int argc, char* args[] )
 					}
 					if(SDL_HasIntersection(&enemyBeam,&shipCollisionBox))
 					{
-						cout << "destroyed\n";
 						titanic.destroy();
 						enemies[i][j].resetBeam();
 					}
