@@ -3,6 +3,7 @@ and may not be redistributed without written permission.*/
 //Using SDL, SDL_image, standard IO, and strings
 #include "ship.h"
 #include "enemyShip.h"
+#include "barrier.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
@@ -117,6 +118,53 @@ int main( int argc, char* args[] )
 		Ship titanic(gRenderer);
 
 		enemyShip enemies[10][10];
+
+		//barrier
+		Barrier barrier1[10][10];
+		int XLocation = 100;
+		int Ylocation = 380;
+		for(int i = 0; i < 10; i++)
+		{
+			for(int j = 0; j < 10; j++)
+			{
+				barrier1[i][j].setRenderer(gRenderer);
+				barrier1[i][j].setX(XLocation);
+				barrier1[i][j].setY(Ylocation);
+				Ylocation+=5;
+			}
+			Ylocation = 380;
+			XLocation+=5;
+		}
+		Barrier barrier2[10][10];
+		XLocation = 250;
+		for(int i = 0; i < 10; i++)
+		{
+			for(int j = 0; j < 10; j++)
+			{
+				barrier2[i][j].setRenderer(gRenderer);
+				barrier2[i][j].setX(XLocation);
+				barrier2[i][j].setY(Ylocation);
+				Ylocation+=5;
+			}
+			Ylocation = 380;
+			XLocation+=5;
+		}
+		Barrier barrier3[10][10];
+		XLocation = 400;
+		for(int i = 0; i < 10; i++)
+		{
+			for(int j = 0; j < 10; j++)
+			{
+				barrier3[i][j].setRenderer(gRenderer);
+				barrier3[i][j].setX(XLocation);
+				barrier3[i][j].setY(Ylocation);
+				Ylocation+=5;
+			}
+			Ylocation = 380;
+			XLocation+=5;
+		}
+
+		//Barrier barriers[3];
 		for(int i = 0; i < 10; i++)
 		{
 			for(int j = 0; j < 10; j++)
@@ -169,7 +217,6 @@ int main( int argc, char* args[] )
 			int r;
 			int c;
 
-			SDL_Rect enemyBeam;
 			if(rand() % 121 == 0)
 			{
 				do
@@ -177,10 +224,14 @@ int main( int argc, char* args[] )
 					r = rand() % 10;
 					c = rand() % 10;
 				}while(!enemies[r][c].shoot());
-			}		
+			}				
+
 			//TODO: Fix beam collision into player ship.
 			SDL_Rect shipCollisionBox = titanic.getShipCollisionBox();
+			//SDL_Rect 
 			SDL_Rect tempBeamBox = titanic.getBeamBox();
+			SDL_Rect enemyBeam;
+			SDL_Rect barriersBox;
 			//Render ship
 			titanic.render();
 			for(int i = 0; i < 10; i++)
@@ -190,6 +241,51 @@ int main( int argc, char* args[] )
 					
 					SDL_Rect tempEnemyBox = enemies[i][j].getShipCollisionBox();
 					enemyBeam = enemies[i][j].getBeamBox();
+					barriersBox = barrier1[i][j].getCollisionBox();
+					if(SDL_HasIntersection(&tempBeamBox, &barriersBox))
+					{
+						barrier1[i][j].destroy();
+						titanic.resetBeam();
+					}
+
+					barriersBox = barrier2[i][j].getCollisionBox();
+					if(SDL_HasIntersection(&tempBeamBox, &barriersBox))
+					{
+						barrier2[i][j].destroy();
+						titanic.resetBeam();
+					}
+
+					barriersBox = barrier3[i][j].getCollisionBox();
+					if(SDL_HasIntersection(&tempBeamBox, &barriersBox))
+					{
+						barrier3[i][j].destroy();
+						titanic.resetBeam();
+					}
+					for(int k = 0; k < 10; k++)
+					{
+						for(int l = 0; l < 10; l++)
+						{
+							barriersBox = barrier1[k][l].getCollisionBox();
+							if(SDL_HasIntersection(&enemyBeam, &barriersBox))
+							{
+								barrier1[k][l].destroy();
+								enemies[i][j].resetBeam();
+							}
+							barriersBox = barrier2[k][l].getCollisionBox();
+							if(SDL_HasIntersection(&enemyBeam, &barriersBox))
+							{
+								barrier2[k][l].destroy();
+								enemies[i][j].resetBeam();
+							}
+							barriersBox = barrier3[k][l].getCollisionBox();
+							if(SDL_HasIntersection(&enemyBeam, &barriersBox))
+							{
+								barrier3[k][l].destroy();
+								enemies[i][j].resetBeam();
+							}
+						}
+					}
+
 
 					if(SDL_HasIntersection(&tempBeamBox,&tempEnemyBox))
 					{
@@ -206,9 +302,35 @@ int main( int argc, char* args[] )
 				}
 			}
 
+
 			//enemies[1][1].render();
+		for(int i = 0; i < 10; i++)
+		{
+			for(int j = 0; j < 10; j++)
+			{
+				barrier1[i][j].render();
+			}
+		}
+		for(int i = 0; i < 10; i++)
+		{
+			for(int j = 0; j < 10; j++)
+			{
+				barrier2[i][j].render();
+			}
+		}
+		for(int i = 0; i < 10; i++)
+		{
+			for(int j = 0; j < 10; j++)
+			{
+				barrier3[i][j].render();
+			}
+		}
+			//barriers[0].render();
+			//barriers[1].render();
+			//barriers[2].render();
 
 			//Update screen
+
 			SDL_RenderPresent( gRenderer );
 			
 		}

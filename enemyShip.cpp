@@ -13,7 +13,7 @@ enemyShip::enemyShip():Ship()
 	mCollider.x = mPosX;
 	mCollider.y = mPosY;
 
-	mVelX = 2;	
+	mVelX = 1;	
 }
 enemyShip::enemyShip(SDL_Renderer* renderer) : Ship(renderer)
 {
@@ -21,7 +21,7 @@ enemyShip::enemyShip(SDL_Renderer* renderer) : Ship(renderer)
 	mPosY = 0;
 	mCollider.x = mPosX;
 	mCollider.y = mPosY;
-	mVelX = 2;
+	mVelX = 1;
 } 
 
 void enemyShip::setX(int x)
@@ -38,8 +38,12 @@ void enemyShip::setY(int y)
 void enemyShip::move(enemyShip arr[][10])
 {
     //Move the ship left or right
-    mPosX += mVelX;
-	mCollider.x = mPosX;
+    if(isShowing)
+    {
+		mPosX += mVelX;
+		mCollider.x = mPosX;
+    }
+
 
     //If the ship collided or went too far to the left or right
     if( ( mPosX < 0 ) || ( mPosX + SHIP_WIDTH > SCREEN_WIDTH ) )

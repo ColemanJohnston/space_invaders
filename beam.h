@@ -12,7 +12,6 @@ class Beam
 		//The dimensions of the beam
 		static const int BEAM_WIDTH = 4;
 		static const int BEAM_HEIGHT = 8;
-		
 		static const int SCREEN_WIDTH = 640;//Coleman: make sure beam knows screen size
 		static const int SCREEN_HEIGHT = 480;//Coleman: make sure beam knows screen size 
 

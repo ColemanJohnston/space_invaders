@@ -119,6 +119,9 @@ void Ship::setRenderer(SDL_Renderer* renderer)
     texture = SDL_CreateTextureFromSurface(renderer,surface);
     SDL_FreeSurface(surface);
     beam.setRenderer(renderer);
+    //
+    
+
 }
 
 void Ship::destroy()

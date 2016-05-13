@@ -71,6 +71,7 @@ void Beam::render()
     }
 }
 
+
 void Beam::shoot(int startX, int startY,int velocity)
 {
     if(!isMoving)
