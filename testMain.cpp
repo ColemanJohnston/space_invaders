@@ -29,6 +29,8 @@ void close();
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
 
+Mix_Music* gMusic;
+
 //The window renderer
 SDL_Renderer* gRenderer = NULL;
 
@@ -52,7 +54,7 @@ bool init()
 		}
 
 		//Create window
-		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+		gWindow = SDL_CreateWindow( "5PAc3 1Nvadderrrzzz", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 		if( gWindow == NULL )
 		{
 			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
@@ -100,6 +102,8 @@ void close()
 	SDL_DestroyWindow( gWindow );
 	gWindow = NULL;
 	gRenderer = NULL;
+	Mix_FreeMusic( gMusic );
+	gMusic = NULL;
 
 	//Quit SDL subsystems
 	IMG_Quit();
@@ -109,6 +113,7 @@ void close()
 
 int main( int argc, char* args[] )
 {
+
 	srand ((unsigned)time(0));
 	//Start up SDL and create window
 	if( !init() )
@@ -136,6 +141,15 @@ int main( int argc, char* args[] )
 				enemies[i][j].setY(i * 30);
 			}
 		}
+
+		//Load music
+	gMusic = Mix_LoadMUS( "./Back_to_the_place_PSG.wav" );
+	
+	Mix_PlayMusic( gMusic, -1 );
+	if( gMusic == NULL )
+	{
+		printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError() );
+	}
 
 		while( !quit )
 		{

@@ -19,7 +19,7 @@ Ship::Ship()
     mCollider.y = mPosY;
     isShowing = true;
     explosion_sound = Mix_LoadWAV( "./explosion.wav" );
-
+    Mix_Volume(1,25);
 
     //Initialize the velocity
     mVelX = 0; 
@@ -34,6 +34,7 @@ Ship::Ship(SDL_Renderer* renderer)//do NOT try to run default constructor
     SDL_FreeSurface(surface);
 
     explosion_sound = Mix_LoadWAV( "./explosion.wav" );
+    Mix_Volume(1,25);
 
     //Initialize the offsets
     mPosX = SCREEN_WIDTH / 2;
@@ -136,5 +137,5 @@ void Ship::destroy()
     mPosY = 2;
     isShowing = false;
     mVelX = 0;
-    Mix_PlayChannel( -1, explosion_sound, 0 );
+    Mix_PlayChannel( 1, explosion_sound, 0 );
 }

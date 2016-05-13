@@ -20,6 +20,7 @@ Beam::Beam()
     isMoving = false;
 
     laser_sound = Mix_LoadWAV( "./laser1.wav" );
+    Mix_Volume(2,35);
 
     //Initialize the velocity
     mVelY = 0;       
@@ -41,6 +42,7 @@ Beam::Beam(SDL_Renderer* renderer)//do NOT try to run default constructor
     isMoving = false;
 
     laser_sound = Mix_LoadWAV( "./laser1.wav" );
+    Mix_Volume(2,35);
 
     //Initialize the velocity
     mVelY = 0;
@@ -88,7 +90,7 @@ void Beam::shoot(int startX, int startY,int velocity)
         mPosY = startY;
         mVelY = velocity;
         isMoving = true;
-        Mix_PlayChannel( -1, laser_sound, 0 );
+        Mix_PlayChannel( 2, laser_sound, 0 );
     }
 }
 
