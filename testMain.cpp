@@ -1,4 +1,4 @@
-This source code copyrighted by Lazy Foo' Productions (2004-2015)
+/*This source code copyrighted by Lazy Foo' Productions (2004-2015)
 and may not be redistributed without written permission.
 
 //Using SDL, SDL_image, standard IO, and strings
@@ -150,7 +150,7 @@ int main( int argc, char* args[] )
 		//SDL_FreeSurface(live2);
 		live3 = IMG_Load("./ship.bmp");
 		//SDL_FreeSurface(live3);
-		*/
+		
 
 
 		enemyShip enemies[10][10];
@@ -406,4 +406,4 @@ int main( int argc, char* args[] )
 	close();
 
 	return 0;
-}
+}*/

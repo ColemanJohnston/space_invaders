@@ -9,9 +9,8 @@ Barrier::Barrier()
     mCollider.h = BARRIER_HEIGHT;
     mCollider.x = 0;
     mCollider.y = 0;
-    isShowing = true; 
-    explosion_sound = Mix_LoadWAV( "./explosion.wav" );
-    Mix_Volume(1,25); 
+    isShowing = true;
+    explosion_sound = NULL;  
 }
 
 Barrier::Barrier(SDL_Renderer* renderer)
@@ -23,8 +22,7 @@ Barrier::Barrier(SDL_Renderer* renderer)
     mCollider.x = SCREEN_WIDTH/2;
     mCollider.y = SCREEN_HEIGHT -25;
     isShowing = true;  
-    explosion_sound = Mix_LoadWAV( "./explosion.wav" );
-    Mix_Volume(1,25);  
+    explosion_sound = NULL;  
    // SDL_SetRenderDrawColor( renderer, 0x00, 0x00, 0xFF, 0xFF ); 
 }
 
@@ -68,4 +66,10 @@ void Barrier::reset()
     mCollider.x = 0;
     mCollider.y = 0;
     isShowing = true;
+}
+
+void Barrier::initAudio()
+{
+    explosion_sound = Mix_LoadWAV( "./explosion.wav" );
+    Mix_Volume(1,25);
 }

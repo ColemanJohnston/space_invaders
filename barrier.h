@@ -25,6 +25,7 @@ class Barrier
 		void destroy();
 		SDL_Rect getCollisionBox()const {return mCollider;}
 		void reset();
+		void initAudio();
 		
 	private:
 		bool isShowing;
