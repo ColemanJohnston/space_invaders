@@ -14,6 +14,7 @@ and may not be redistributed without written permission.
 #include <iostream>
 #include <time.h>
 #include <cstdlib>
+#include <SDL2_ttf.h>
 using namespace std;
 
 //Screen dimension constants
@@ -34,6 +35,18 @@ Mix_Music* gMusic;
 
 //The window renderer
 SDL_Renderer* gRenderer = NULL;
+
+SDL_Surface* live1;// = IMG_Load("./ship.bmp");
+//texture = SDL_CreateTextureFromSurface(renderer,surface);
+ 	//SDL_FreeSurface(live1);
+SDL_Surface* live2;// = IMG_Load("./ship.bmp");
+//SDL_FreeSurface(live2);
+SDL_Surface* live3;// = IMG_Load("./ship.bmp");
+//SDL_FreeSurface(live3);
+SDL_Texture* texture;
+//lifes
+int lifes = 3;
+
 
 bool init()
 {
@@ -105,6 +118,7 @@ void close()
 	gRenderer = NULL;
 	Mix_FreeMusic( gMusic );
 	gMusic = NULL;
+	//free memory
 
 	//Quit SDL subsystems
 	IMG_Quit();
@@ -114,6 +128,7 @@ void close()
 
 int main( int argc, char* args[] )
 {
+
 
 	srand ((unsigned)time(0));
 	//Start up SDL and create window
@@ -131,6 +146,20 @@ int main( int argc, char* args[] )
 
 		//The dot that will be moving around on the screen
 		Ship titanic(gRenderer);
+
+		//Disply the lives
+		/*
+		live1 = IMG_Load("./ship.bmp");
+		texture = SDL_CreateTextureFromSurface(gRenderer, live1);
+		SDL_BlitSurface(live1, NULL, gRenderer, NULL );
+        //texture = SDL_CreateTextureFromSurface(renderer,surface);
+   	 	//SDL_FreeSurface(live1);
+		live2 = IMG_Load("./ship.bmp");
+		//SDL_FreeSurface(live2);
+		live3 = IMG_Load("./ship.bmp");
+		//SDL_FreeSurface(live3);
+		*/
+
 
 		enemyShip enemies[10][10];
 
@@ -189,7 +218,6 @@ int main( int argc, char* args[] )
 				enemies[i][j].setY(i * 30);
 			}
 		}
-
 		//Load music
 	gMusic = Mix_LoadMUS( "./Back_to_the_place_PSG.wav" );
 	
@@ -247,6 +275,35 @@ int main( int argc, char* args[] )
 			SDL_Rect barriersBox;
 			//Render ship
 			titanic.render();
+			//SCREEN_WIDTH = 640;//Coleman: make sure ship knows screen size
+			//SCREEN_HEIGHT = 480
+			if(lifes == 3)
+			{
+				//lifeRec1.w = 0;
+				//lifeRec1.h = 0;
+				titanic.render(618, 0);
+				titanic.render(593, 0);
+				titanic.render(568, 0);
+			}
+			else if(lifes == 2)
+			{
+				//lifeRec2.w = 0;
+				//lifeRec2.h = 0;
+				titanic.render(593, 0);
+				titanic.render(568, 0);
+
+			}
+			else if(lifes == 1)
+			{
+				//lifeRec3.w = 0;
+				//lifeRec3.h = 0;
+				titanic.render(568, 0);
+			}
+
+			//SDL_Rect lifeRec1;
+
+			//titanic.render(0, 1);
+			//titanic.render(0, 2);
 			for(int i = 0; i < 10; i++)
 			{
 				for(int j = 0; j < 10; j++)
@@ -307,7 +364,12 @@ int main( int argc, char* args[] )
 					}
 					if(SDL_HasIntersection(&enemyBeam,&shipCollisionBox))
 					{
-						titanic.destroy();
+						lifes--;
+						if(lifes == 0)
+						{
+							titanic.destroy();
+						}
+						//titanic.destroy();
 						enemies[i][j].resetBeam();
 					}
 					enemies[i][j].render();

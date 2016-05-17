@@ -37,10 +37,14 @@ class Ship
 
 		//Shows the ship on the screen
 		void render();
+		void render(int x, int y);
+
 		
 		void setRenderer(SDL_Renderer* renderer);
 
 		void destroy();
+
+		void checkLifes();
 
 		void resetBeam(){beam.destroy();}
 
@@ -61,6 +65,9 @@ class Ship
 		bool isShowing;
 
 		Beam beam;
+		//added this 
+		SDL_Rect rec;
+
 		
 		//Dot's collision box
 		SDL_Rect mCollider;
