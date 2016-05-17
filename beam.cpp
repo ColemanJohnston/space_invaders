@@ -1,6 +1,7 @@
 #include "beam.h"
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h> 
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h> 
 #include <stdio.h>
 #include <string>
 
@@ -8,15 +9,18 @@
 Beam::Beam()
 {
     //Initialize the offsets
-    mPosX = SCREEN_WIDTH / 2;
-    mPosY = SCREEN_HEIGHT - 25;
+    mPosX = 0;
+    mPosY = 0;
 
     //Set collision box dimension
-    mCollider.w = BEAM_WIDTH;
-    mCollider.h = BEAM_HEIGHT;
+    mCollider.w = 0;
+    mCollider.h = 0;
     mCollider.x = mPosX;
     mCollider.y = mPosY;
     isMoving = false;
+
+    laser_sound = Mix_LoadWAV( "./laser1.wav" );
+    Mix_Volume(2,35);
 
     //Initialize the velocity
     mVelY = 0;       
@@ -37,6 +41,9 @@ Beam::Beam(SDL_Renderer* renderer)//do NOT try to run default constructor
     mCollider.y = mPosY;
     isMoving = false;
 
+    laser_sound = Mix_LoadWAV( "./laser1.wav" );
+    Mix_Volume(2,35);
+
     //Initialize the velocity
     mVelY = 0;
 }
@@ -54,14 +61,9 @@ void Beam::move()
     	mCollider.y = mPosY;
 
         //If the ship collided or went too far to the left or right
-        if( mPosY < 0 )
+        if( mPosY < 0  || mPosY > SCREEN_HEIGHT)
         {
-            //Move back
-            mPosY -= mVelY;
-    		mCollider.y = mPosY;
-            isMoving = false;
-            mCollider.w = 0;
-            mCollider.h = 0;
+            destroy();
         }
     }
 }
@@ -76,6 +78,7 @@ void Beam::render()
     }
 }
 
+
 void Beam::shoot(int startX, int startY,int velocity)
 {
     if(!isMoving)
@@ -88,5 +91,18 @@ void Beam::shoot(int startX, int startY,int velocity)
         mPosY = startY;
         mVelY = velocity;
         isMoving = true;
+        Mix_PlayChannel( 2, laser_sound, 0 );
     }
+}
+
+void Beam::destroy()
+{
+    mPosY = SCREEN_HEIGHT - 1;
+    mPosX = SCREEN_WIDTH - 1;
+    mCollider.y = mPosY;
+    mCollider.x = mPosX;
+    isMoving = false;
+    mCollider.w = 0;
+    mCollider.h = 0;
+    mVelY = 0;
 }

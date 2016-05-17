@@ -3,7 +3,8 @@
 
 #include "beam.h"
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h> 
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h> 
 #include <stdio.h>
 #include <string>
 
@@ -24,21 +25,34 @@ class Ship
 		Ship();
 		Ship(SDL_Renderer* renderer);//constructor needs the renderer in order to render itself to the screen and not have a global variable
 
-		~Ship(){SDL_DestroyTexture(texture);}
+		~Ship(){SDL_DestroyTexture(texture); Mix_FreeChunk( explosion_sound );}
 
 		//Takes key presses and adjusts the ship's velocity
 		void handleEvent( SDL_Event& e );
 
 		//Moves the dot and checks collision
 		void move();
+		SDL_Rect getShipCollisionBox();
+		SDL_Rect getBeamBox();
 
 		//Shows the ship on the screen
 		void render();
+		void render(int x, int y);
+
+		
 		void setRenderer(SDL_Renderer* renderer);
+
+		void destroy();
+
+		void checkLifes();
+
+		void resetBeam(){beam.destroy();}
 
     protected:
 		//ship needs the renderer from the rest of the class in order to be able to render itself 
 		SDL_Renderer* renderer;
+
+		Mix_Chunk* explosion_sound; 
 
 		//The X and Y offsets of the ship
 		int mPosX, mPosY;
@@ -46,14 +60,17 @@ class Ship
 		//The velocity of the ship
 		int mVelX;
 
+		bool isShowing;
+
 		Beam beam;
+		//added this 
+		SDL_Rect rec;
+
 		
 		//Dot's collision box
 		SDL_Rect mCollider;
 
 		//render the picture associated with the ship
 		SDL_Texture* texture;
-
-
 };
 #endif
