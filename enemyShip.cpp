@@ -62,11 +62,14 @@ void enemyShip::move(enemyShip arr[][10])
 		{
 			for(int j = 0; j < 10; j++)
 			{
-				arr[i][j].mPosX -= mVelX;
-				arr[i][j].mCollider.x = mPosX;
-				arr[i][j].mVelX *= -1;
-				arr[i][j].mPosY += 20;
-				arr[i][j].mCollider.y += 20;
+				if(arr[i][j].isShowing)
+				{
+					arr[i][j].mPosX -= mVelX;
+					arr[i][j].mCollider.x = mPosX;
+					arr[i][j].mVelX *= -1;
+					arr[i][j].mPosY += 20;
+					arr[i][j].mCollider.y += 20;
+				}
 			}
 		}
     }
