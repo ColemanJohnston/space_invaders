@@ -121,13 +121,11 @@ void Ship::setRenderer(SDL_Renderer* renderer)
 {
     this->renderer = renderer;
 
-    SDL_Surface* surface = IMG_Load("./ship.bmp");
+    SDL_Surface* surface = IMG_Load("./ship.png");
     texture = SDL_CreateTextureFromSurface(renderer,surface);
     SDL_FreeSurface(surface);
     beam.setRenderer(renderer);
-    //
     
-
 }
 
 void Ship::destroy()

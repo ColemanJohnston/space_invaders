@@ -30,7 +30,7 @@ Board::Board()
 		}
 
 		//Create window
-		window = SDL_CreateWindow( "Space Shooter", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+		window = SDL_CreateWindow( "Space Invaders", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 		if(window == NULL )
 		{
 			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
@@ -92,6 +92,8 @@ Board::Board()
 			enemies[i][j].setRenderer(renderer);
 		}
 	}
+	//set the renderer for the player ship
+	playerShip.setRenderer(renderer);
 }
 
 //********************************************************************************************************************************
@@ -155,7 +157,7 @@ void Board::beginMenu()
 			quit = true;
 		}
 
-		SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 0xFF );
+		SDL_SetRenderDrawColor( renderer, 0x00, 0x00, 0x00, 0x00 );
 		SDL_RenderClear( renderer );
 
 		playerMenu.render();
@@ -189,10 +191,8 @@ void Board::startGameLoop()
 
 	//Event handler
 	SDL_Event e;
-	Ship playerShip(renderer);
 
 	//barrier
-	Barrier barrier1[10][10];
 	int XLocation = 100;
 	int Ylocation = 380;
 	for(int i = 0; i < 10; i++)
@@ -206,7 +206,7 @@ void Board::startGameLoop()
 		Ylocation = 380;
 		XLocation+=5;
 	}
-	Barrier barrier2[10][10];
+	
 	XLocation = 250;
 	for(int i = 0; i < 10; i++)
 	{
@@ -219,7 +219,7 @@ void Board::startGameLoop()
 		Ylocation = 380;
 		XLocation+=5;
 	}
-	Barrier barrier3[10][10];
+
 	XLocation = 400;
 	for(int i = 0; i < 10; i++)
 	{
@@ -237,7 +237,6 @@ void Board::startGameLoop()
 	{
 		for(int j = 0; j < 10; j++)
 		{
-			enemies[i][j].setRenderer(renderer);
 			enemies[i][j].setX(j * 30);
 			enemies[i][j].setY(i * 30);
 		}
@@ -269,7 +268,7 @@ void Board::startGameLoop()
 			}
 		}
 		//Clear screen
-		SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 0xFF );
+		SDL_SetRenderDrawColor( renderer, 0x00, 0x00, 0x00, 0x00 );
 		SDL_RenderClear( renderer );
 		int r;
 		int c;
@@ -356,30 +355,34 @@ void Board::startGameLoop()
 			}
 		}
 
-	for(int i = 0; i < 10; i++)
-	{
-		for(int j = 0; j < 10; j++)
+		for(int i = 0; i < 10; i++)
 		{
-			barrier1[i][j].render();
+			for(int j = 0; j < 10; j++)
+			{
+				barrier1[i][j].render();
+			}
 		}
-	}
-	for(int i = 0; i < 10; i++)
-	{
-		for(int j = 0; j < 10; j++)
+		
+		for(int i = 0; i < 10; i++)
 		{
-			barrier2[i][j].render();
+			for(int j = 0; j < 10; j++)
+			{
+				barrier2[i][j].render();
+			}
 		}
-	}
-	for(int i = 0; i < 10; i++)
-	{
-		for(int j = 0; j < 10; j++)
+		
+		for(int i = 0; i < 10; i++)
 		{
-			barrier3[i][j].render();
+			for(int j = 0; j < 10; j++)
+			{
+				barrier3[i][j].render();
+			}
 		}
-	}
 
-		SDL_RenderPresent( renderer );
-	}
+			SDL_RenderPresent( renderer );
+		}
+
+		resetGameLoop();
 }
 //********************************************************************************************************************************
 void Board::resetGameLoop()
@@ -388,12 +391,13 @@ void Board::resetGameLoop()
 	{
 		for(int j = 0; j < 10; j++)
 		{
-			barrier1[i][j].setRenderer(renderer);
-			barrier2[i][j].setRenderer(renderer);
-			barrier3[i][j].setRenderer(renderer);
-			enemies[i][j].setRenderer(renderer);
+			barrier1[i][j].reset();
+			barrier2[i][j].reset();
+			barrier3[i][j].reset();
+			enemies[i][j].reset();
 		}
 	}
+	playerShip.reset();
 	
 }
 Board::~Board()
