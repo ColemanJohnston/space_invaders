@@ -80,6 +80,18 @@ Board::Board()
 	{
 		exit(0);
 	}
+	
+	//set rederers for barrier and enemy objects
+	for(int i = 0; i < 10; i++)
+	{
+		for(int j = 0; j < 10; j++)
+		{
+			barrier1[i][j].setRenderer(renderer);
+			barrier2[i][j].setRenderer(renderer);
+			barrier3[i][j].setRenderer(renderer);
+			enemies[i][j].setRenderer(renderer);
+		}
+	}
 }
 
 //********************************************************************************************************************************
@@ -187,7 +199,6 @@ void Board::startGameLoop()
 	{
 		for(int j = 0; j < 10; j++)
 		{
-			barrier1[i][j].setRenderer(renderer);
 			barrier1[i][j].setX(XLocation);
 			barrier1[i][j].setY(Ylocation);
 			Ylocation+=5;
@@ -201,7 +212,6 @@ void Board::startGameLoop()
 	{
 		for(int j = 0; j < 10; j++)
 		{
-			barrier2[i][j].setRenderer(renderer);
 			barrier2[i][j].setX(XLocation);
 			barrier2[i][j].setY(Ylocation);
 			Ylocation+=5;
@@ -215,7 +225,6 @@ void Board::startGameLoop()
 	{
 		for(int j = 0; j < 10; j++)
 		{
-			barrier3[i][j].setRenderer(renderer);
 			barrier3[i][j].setX(XLocation);
 			barrier3[i][j].setY(Ylocation);
 			Ylocation+=5;
@@ -375,6 +384,16 @@ void Board::startGameLoop()
 //********************************************************************************************************************************
 void Board::resetGameLoop()
 {
+	for(int i = 0; i < 10; i++)
+	{
+		for(int j = 0; j < 10; j++)
+		{
+			barrier1[i][j].setRenderer(renderer);
+			barrier2[i][j].setRenderer(renderer);
+			barrier3[i][j].setRenderer(renderer);
+			enemies[i][j].setRenderer(renderer);
+		}
+	}
 	
 }
 Board::~Board()
