@@ -18,6 +18,7 @@ public:
 	void setY(int y);
 	void setRenderer(SDL_Renderer* renderer);
     bool shoot();
+    void reset();
 };
 #endif
 

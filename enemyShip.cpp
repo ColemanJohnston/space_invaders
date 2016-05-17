@@ -30,7 +30,7 @@ enemyShip::enemyShip(SDL_Renderer * renderer, int posX, int posY): Ship(renderer
 	this->mPosY = posY;
 	mCollider.x = mPosX;
 	mCollider.y = mPosY;
-	mVelX = 0;
+	mVelX = 1;
 }
 
 void enemyShip::setX(int x)
@@ -91,4 +91,21 @@ bool enemyShip::shoot()
 	}
 	else
 		return false;
+}
+
+void enemyShip::reset()
+{
+	//reset the offsets
+    mPosX = 0;
+    mPosY = 0;
+
+    //reset collision box dimension
+    mCollider.w = SHIP_WIDTH;
+    mCollider.h = SHIP_HEIGHT;
+    mCollider.x = mPosX;
+    mCollider.y = mPosY;
+    isShowing = true;
+
+    //re-initialize the velocity
+    mVelX = 1;    
 }

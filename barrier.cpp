@@ -8,8 +8,10 @@ Barrier::Barrier()
     mCollider.w = BARRIER_WIDTH;
     mCollider.h = BARRIER_HEIGHT;
     mCollider.x = 0;
-    mCollider.y = 0; 
+    mCollider.y = 0;
+    isShowing = true; 
 }
+
 Barrier::Barrier(SDL_Renderer* renderer)
 {
 	this->renderer = renderer;
@@ -17,18 +19,22 @@ Barrier::Barrier(SDL_Renderer* renderer)
     mCollider.w = BARRIER_WIDTH;
     mCollider.h = BARRIER_HEIGHT;
     mCollider.x = SCREEN_WIDTH/2;
-    mCollider.y = SCREEN_HEIGHT -25;  
+    mCollider.y = SCREEN_HEIGHT -25;
+    isShowing = true;  
    // SDL_SetRenderDrawColor( renderer, 0x00, 0x00, 0xFF, 0xFF ); 
 }
+
 void Barrier::setRenderer(SDL_Renderer* renderer)
 {
 	this->renderer = renderer;
 }
+
 void Barrier::render()
 {
 	SDL_SetRenderDrawColor( renderer, 0x00, 0x00, 0xFF, 0xFF );
 	SDL_RenderFillRect( renderer, &mCollider );
 }
+
 void Barrier::destroy()
 {
     mCollider.y = SCREEN_HEIGHT - 1;
@@ -38,11 +44,22 @@ void Barrier::destroy()
 
     isShowing = false;
 }
+
 void Barrier::setX(int x)
 {
 	this->mCollider.x = x;
 }
+
 void Barrier::setY(int y)
 {
 	this->mCollider.y = y;
+}
+
+void reset()
+{
+    mCollider.w = BARRIER_WIDTH;
+    mCollider.h = BARRIER_HEIGHT;
+    mCollider.x = 0;
+    mCollider.y = 0;
+    isShowing = true;
 }

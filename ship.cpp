@@ -142,3 +142,20 @@ void Ship::destroy()
     mVelX = 0;
     Mix_PlayChannel( 1, explosion_sound, 0 );
 }
+
+void Ship::reset()
+{
+    //reset the offsets
+    mPosX = SCREEN_WIDTH / 2;
+    mPosY = SCREEN_HEIGHT - 25;
+
+    //reset collision box dimension
+    mCollider.w = SHIP_WIDTH;
+    mCollider.h = SHIP_HEIGHT;
+    mCollider.x = mPosX;
+    mCollider.y = mPosY;
+    isShowing = true;
+
+    //re-initialize the velocity
+    mVelX = 0;    
+}

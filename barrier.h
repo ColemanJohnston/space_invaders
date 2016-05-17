@@ -22,6 +22,7 @@ class Barrier
 		void render();
 		void destroy();
 		SDL_Rect getCollisionBox()const {return mCollider;}
+		void reset();
 		
 	private:
 		bool isShowing;
