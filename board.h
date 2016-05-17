@@ -32,7 +32,6 @@ private:
 
 public:
 	Board();
-	~Board();
 	void playerScore();
 	void displayEnemy();
 	void displayPlayerShip();
@@ -40,5 +39,7 @@ public:
 	void loseScreen();
 	void winScreen();
 	void startGameLoop();
+	void resetGameLoop();
+	~Board();
 };
 #endif

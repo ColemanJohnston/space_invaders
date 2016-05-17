@@ -62,7 +62,11 @@ void enemyShip::move(enemyShip arr[][10])
 		{
 			for(int j = 0; j < 10; j++)
 			{
+<<<<<<< HEAD
 				if(arr[i][j].isShowing)
+=======
+				if(isShowing)
+>>>>>>> 25dfa18b71a0bfcf6a31b42786456647549f401c
 				{
 					arr[i][j].mPosX -= mVelX;
 					arr[i][j].mCollider.x = mPosX;

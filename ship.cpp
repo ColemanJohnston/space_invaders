@@ -29,7 +29,7 @@ Ship::Ship(SDL_Renderer* renderer)//do NOT try to run default constructor
 {
     this->renderer = renderer;
     //make surface
-    SDL_Surface* surface = IMG_Load("./ship.bmp");
+    SDL_Surface* surface = IMG_Load("./ship.png");
     texture = SDL_CreateTextureFromSurface(renderer,surface);
     SDL_FreeSurface(surface);
 

@@ -1,4 +1,4 @@
-/*This source code copyrighted by Lazy Foo' Productions (2004-2015)
+This source code copyrighted by Lazy Foo' Productions (2004-2015)
 and may not be redistributed without written permission.
 
 //Using SDL, SDL_image, standard IO, and strings
@@ -225,7 +225,7 @@ int main( int argc, char* args[] )
 				}
 			}
 			//Clear screen
-			SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+			SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0x00 );
 			SDL_RenderClear( gRenderer );
 			int r;
 			int c;
@@ -352,4 +352,4 @@ int main( int argc, char* args[] )
 	close();
 
 	return 0;
-}*/
+}
