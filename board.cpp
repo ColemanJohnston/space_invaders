@@ -373,9 +373,9 @@ void Board::startGameLoop()
 	}
 }
 //********************************************************************************************************************************
-Board::resetGameLoop()
+void Board::resetGameLoop()
 {
-	.reset();
+	
 }
 Board::~Board()
 {
