@@ -35,14 +35,6 @@ Mix_Music* gMusic;
 
 //The window renderer
 SDL_Renderer* gRenderer = NULL;
-
-SDL_Surface* live1;// = IMG_Load("./ship.bmp");
-//texture = SDL_CreateTextureFromSurface(renderer,surface);
- 	//SDL_FreeSurface(live1);
-SDL_Surface* live2;// = IMG_Load("./ship.bmp");
-//SDL_FreeSurface(live2);
-SDL_Surface* live3;// = IMG_Load("./ship.bmp");
-//SDL_FreeSurface(live3);
 SDL_Texture* texture;
 //lifes
 int lifes = 3;

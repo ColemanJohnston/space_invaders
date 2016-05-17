@@ -70,16 +70,6 @@ void enemyShip::move(enemyShip arr[][10])
 				}
 			}
 		}
-<<<<<<< HEAD
-=======
-/*
-        mPosX -= mVelX;
-		mCollider.x = mPosX;
-		mVelX *= -1;
-		mPosY += 20;
-		mCollider.y += 20;
-		*/
->>>>>>> 5f7286255f7961ae2097c44bdb0e2c45ed54dc43
     }
     beam.move();
 }

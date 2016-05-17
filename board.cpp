@@ -288,6 +288,25 @@ void Board::startGameLoop()
 		SDL_Rect barriersBox;
 		//Render ship
 		playerShip.render();
+
+		if(lifes == 3)
+			{
+
+				playerShip.render(618, 0);
+				playerShip.render(593, 0);
+				playerShip.render(568, 0);
+			}
+			else if(lifes == 2)
+			{
+				playerShip.render(593, 0);
+				playerShip.render(568, 0);
+
+			}
+			else if(lifes == 1)
+			{
+				playerShip.render(568, 0);
+			}
+
 		for(int i = 0; i < 10; i++)
 		{
 			for(int j = 0; j < 10; j++)
@@ -348,7 +367,11 @@ void Board::startGameLoop()
 				}
 				if(SDL_HasIntersection(&enemyBeam,&shipCollisionBox))
 				{
-					playerShip.destroy();
+					lifes--;
+					if(lifes == 0)
+					{	
+						playerShip.destroy();
+					}
 					enemies[i][j].resetBeam();
 				}
 				enemies[i][j].render();
@@ -398,6 +421,7 @@ void Board::resetGameLoop()
 		}
 	}
 	playerShip.reset();
+	lifes = 3;
 	
 }
 Board::~Board()
