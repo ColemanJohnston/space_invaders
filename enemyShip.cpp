@@ -24,6 +24,15 @@ enemyShip::enemyShip(SDL_Renderer* renderer) : Ship(renderer)
 	mVelX = 1;
 } 
 
+enemyShip::enemyShip(SDL_Renderer * renderer, int posX, int posY): Ship(renderer)
+{
+	this->mPosX = posX;
+	this->mPosY = posY;
+	mCollider.x = mPosX;
+	mCollider.y = mPosY;
+	mVelX = 0;
+}
+
 void enemyShip::setX(int x)
 {
 	this->mPosX = x;
@@ -60,14 +69,6 @@ void enemyShip::move(enemyShip arr[][10])
 				arr[i][j].mCollider.y += 20;
 			}
 		}
-/*
-        mPosX -= mVelX;
-		mCollider.x = mPosX;
-
-		mVelX *= -1;
-		mPosY += 20;
-		mCollider.y += 20;
-		*/
     }
     beam.move();
 }

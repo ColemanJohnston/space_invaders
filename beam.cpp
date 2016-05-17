@@ -104,8 +104,4 @@ void Beam::destroy()
     isMoving = false;
     mCollider.w = 0;
     mCollider.h = 0;
-<<<<<<< HEAD
-=======
-    mVelY = 0;
->>>>>>> 0f396b95110358515d92c862400c4817c512c90e
 }
