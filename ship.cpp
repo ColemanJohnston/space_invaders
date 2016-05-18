@@ -6,6 +6,9 @@
 #include <stdio.h>
 #include <string>
 
+#include <iostream>
+using namespace std;
+
 Ship::Ship()
 {
    //Initialize the offsets
@@ -18,11 +21,14 @@ Ship::Ship()
     mCollider.x = mPosX;
     mCollider.y = mPosY;
     isShowing = true;
-    explosion_sound = Mix_LoadWAV( "/explosion.wav" );
-    Mix_Volume(1,25);
+    //explosion_sound = Mix_LoadWAV( "/explosion.wav" );
+    //Mix_Volume(1,25);
 
     //Initialize the velocity
-    mVelX = 0; 
+    mVelX = 0;
+
+    //Initialize pointer for audio to prevent seg fault
+    explosion_sound = NULL; 
 }
 
 Ship::Ship(SDL_Renderer* renderer)//do NOT try to run default constructor
@@ -33,8 +39,8 @@ Ship::Ship(SDL_Renderer* renderer)//do NOT try to run default constructor
     texture = SDL_CreateTextureFromSurface(renderer,surface);
     SDL_FreeSurface(surface);
 
-    explosion_sound = Mix_LoadWAV( "/explosion.wav" );
-    Mix_Volume(1,25);
+    //explosion_sound = Mix_LoadWAV( "/explosion.wav" );
+    //Mix_Volume(1,25);
 
     //Initialize the offsets
     mPosX = SCREEN_WIDTH / 2;
@@ -51,6 +57,9 @@ Ship::Ship(SDL_Renderer* renderer)//do NOT try to run default constructor
 
     //Initialize the velocity
     mVelX = 0;
+
+    //Initialize pointer for audio to prevent seg fault
+    explosion_sound = NULL;
 }
 
 void Ship::handleEvent( SDL_Event& e )
@@ -220,4 +229,11 @@ void Ship::reset()
 
     //re-initialize the velocity
     mVelX = 0;    
+}
+
+void Ship::initAudio()
+{
+	explosion_sound = Mix_LoadWAV( "./explosion.wav" );
+    Mix_Volume(1,25);
+    beam.initAudio();	
 }

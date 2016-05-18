@@ -65,7 +65,7 @@ Board::Board()
                 }
 
                 music = Mix_LoadMUS( "./Back_to_the_place_PSG.wav" );
-				Mix_PlayMusic( music, -1 );
+				Mix_PlayMusic( music, 3 );
 				if( music == NULL )
 				{
 					printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError() );
@@ -80,7 +80,6 @@ Board::Board()
 	{
 		exit(0);
 	}
-	
 	//set rederers for barrier and enemy objects
 	for(int i = 0; i < 10; i++)
 	{
@@ -90,10 +89,15 @@ Board::Board()
 			barrier2[i][j].setRenderer(renderer);
 			barrier3[i][j].setRenderer(renderer);
 			enemies[i][j].setRenderer(renderer);
+			barrier1[i][j].initAudio();
+			barrier2[i][j].initAudio();
+			barrier3[i][j].initAudio();
+			enemies[i][j].initAudio();
 		}
 	}
 	//set the renderer for the player ship
 	playerShip.setRenderer(renderer);
+	playerShip.initAudio();
 }
 
 //********************************************************************************************************************************
@@ -128,6 +132,10 @@ void Board::beginMenu()
 	Ship playerMenu(renderer);
 	enemyShip enemyStart(renderer, 210, SCREEN_HEIGHT/2),
 			  enemyQuit(renderer,410, SCREEN_HEIGHT/2);
+
+	enemyStart.initAudio();
+	enemyQuit.initAudio();
+	playerMenu.initAudio();
 
 	bool quit = false;
 	while(!quit)

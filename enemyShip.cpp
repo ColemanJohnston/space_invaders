@@ -13,22 +13,24 @@ enemyShip::enemyShip():Ship()
 	mCollider.y = mPosY;
 	mVelX = 1;	
 }
-enemyShip::enemyShip(SDL_Renderer* renderer) : Ship(renderer)
+enemyShip::enemyShip(SDL_Renderer* renderer) : Ship()
 {
 	mPosX = 0;
 	mPosY = 0;
 	mCollider.x = mPosX;
 	mCollider.y = mPosY;
 	mVelX = 1;
+	setRenderer(renderer);
 } 
 
-enemyShip::enemyShip(SDL_Renderer * renderer, int posX, int posY): Ship(renderer)
+enemyShip::enemyShip(SDL_Renderer * renderer, int posX, int posY): Ship()
 {
 	this->mPosX = posX;
 	this->mPosY = posY;
 	mCollider.x = mPosX;
 	mCollider.y = mPosY;
 	mVelX = 1;
+	setRenderer(renderer);
 }
 
 void enemyShip::setX(int x)
