@@ -4,6 +4,7 @@ and may not be redistributed without written permission.*/
 //Using SDL, SDL_image, standard IO, and strings
 #include "ship.h"
 #include "enemyShip.h"
+#include "font.h"
 #include "barrier.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -14,7 +15,7 @@ and may not be redistributed without written permission.*/
 #include <iostream>
 #include <time.h>
 #include <cstdlib>
-#include <SDL2_ttf.h>
+#include <SDL2/SDL_ttf.h>
 using namespace std;
 
 //Screen dimension constants
@@ -52,13 +53,14 @@ bool init()
 {
 	//Initialization flag
 	bool success = true;
-
+	TTF_Init();
 	//Initialize SDL
 	if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO ) < 0 )
 	{
 		printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
 		success = false;
 	}
+	//Error check later
 	else
 	{
 		//Set texture filtering to linear
@@ -128,7 +130,7 @@ void close()
 
 int main( int argc, char* args[] )
 {
-
+	int score = 0;
 
 	srand ((unsigned)time(0));
 	//Start up SDL and create window
@@ -146,6 +148,7 @@ int main( int argc, char* args[] )
 
 		//The dot that will be moving around on the screen
 		Ship titanic(gRenderer);
+		Font font(gRenderer);
 
 		//Disply the lives
 		/*
@@ -275,8 +278,10 @@ int main( int argc, char* args[] )
 			SDL_Rect barriersBox;
 			//Render ship
 			titanic.render();
+			//font.display(250, 250, 35, 35, "Hello");
 			//SCREEN_WIDTH = 640;//Coleman: make sure ship knows screen size
 			//SCREEN_HEIGHT = 480
+			font.display(250, 250, 35, 35, to_string(score));
 			if(lifes == 3)
 			{
 				//lifeRec1.w = 0;
@@ -360,6 +365,7 @@ int main( int argc, char* args[] )
 					if(SDL_HasIntersection(&tempBeamBox,&tempEnemyBox))
 					{
 						enemies[i][j].destroy();
+						score++;
 						titanic.resetBeam();
 					}
 					if(SDL_HasIntersection(&enemyBeam,&shipCollisionBox))
