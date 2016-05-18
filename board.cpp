@@ -23,7 +23,7 @@ Board::Board()
 	}
 	else
 	{
-		//Set texture filtering to linear
+		//Set texfture filtering to linear
 		if( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" ) )
 		{
 			printf( "Warning: Linear texture filtering not enabled!" );

@@ -1,5 +1,6 @@
 #ifndef BOARD_H
 #define BOARD_H
+
 #include "ship.h"
 #include "enemyShip.h"
 #include "barrier.h"
