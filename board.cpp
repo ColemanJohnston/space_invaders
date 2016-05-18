@@ -1,6 +1,7 @@
 #include "ship.h"
 #include "board.h"
 #include "enemyShip.h"
+#include "font.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
@@ -14,6 +15,7 @@ Board::Board()
 {
 	//Initialize flag
 	bool success = true;
+	TTF_Init();
 
 	//Initialize SDL
 	if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0 )
@@ -103,7 +105,8 @@ Board::Board()
 //********************************************************************************************************************************
 void Board::playerScore()
 {
-	
+	//Font font(renderer);
+	//font.display(250, 250, 35, 35, to_string(score));
 }
 
 //********************************************************************************************************************************
@@ -192,6 +195,7 @@ void Board::winScreen()
 void Board::startGameLoop()
 {
 	srand ((unsigned)time(0));
+	resetGameLoop();
 	//Start up SDL and create window
 
 	//Main loop flag
@@ -199,6 +203,8 @@ void Board::startGameLoop()
 
 	//Event handler
 	SDL_Event e;
+	Font font(renderer);
+	//int score = 0;
 
 	//barrier
 	int XLocation = 100;
@@ -252,6 +258,13 @@ void Board::startGameLoop()
 
 	while( !quit )
 	{
+		if((score + 1 )%101 == 0)
+		{
+			int tempScore = score;
+			resetGameLoop();
+			score = tempScore;
+
+		}
 		//Handle events on queue
 		while( SDL_PollEvent( &e ) != 0 )
 		{
@@ -296,6 +309,8 @@ void Board::startGameLoop()
 		SDL_Rect barriersBox;
 		//Render ship
 		playerShip.render();
+		//playerScore();
+		font.display(250, 250, 35, 35, to_string(score));
 
 		if(lifes == 3)
 			{
@@ -321,6 +336,10 @@ void Board::startGameLoop()
 			{
 				
 				SDL_Rect tempEnemyBox = enemies[i][j].getShipCollisionBox();
+				if(tempEnemyBox.y + 20 > SCREEN_HEIGHT)
+				{
+					beginMenu();
+				}
 				enemyBeam = enemies[i][j].getBeamBox();
 				barriersBox = barrier1[i][j].getCollisionBox();
 				if(SDL_HasIntersection(&tempBeamBox, &barriersBox))
@@ -371,6 +390,7 @@ void Board::startGameLoop()
 				if(SDL_HasIntersection(&tempBeamBox,&tempEnemyBox))
 				{
 					enemies[i][j].destroy();
+					score++;
 					playerShip.resetBeam();
 				}
 				if(SDL_HasIntersection(&enemyBeam,&shipCollisionBox))
@@ -430,8 +450,10 @@ void Board::resetGameLoop()
 	}
 	playerShip.reset();
 	lifes = 3;
-	
+	score = 0;
+
 }
+//*********************************************************************************************************************************
 Board::~Board()
 {
 

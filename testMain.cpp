@@ -1,4 +1,4 @@
-/*This source code copyrighted by Lazy Foo' Productions (2004-2015)
+This source code copyrighted by Lazy Foo' Productions (2004-2015)
 and may not be redistributed without written permission.
 
 //Using SDL, SDL_image, standard IO, and strings
@@ -143,7 +143,7 @@ int main( int argc, char* args[] )
 		Font font(gRenderer);
 
 		//Disply the lives
-		/*
+		
 		live1 = IMG_Load("./ship.bmp");
 		texture = SDL_CreateTextureFromSurface(gRenderer, live1);
 		SDL_BlitSurface(live1, NULL, gRenderer, NULL );
@@ -412,4 +412,4 @@ int main( int argc, char* args[] )
 	close();
 
 	return 0;
-}*/
+}
