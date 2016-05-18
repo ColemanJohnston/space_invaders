@@ -50,7 +50,7 @@ Ship::Ship(SDL_Renderer* renderer)//do NOT try to run default constructor
     mCollider.w = SHIP_WIDTH;
     mCollider.h = SHIP_HEIGHT;
     mCollider.x = mPosX;
-    mCollider.y = mPosY;
+    mCollider.y = mPosY; 
     isShowing = true;
 
     beam.setRenderer(renderer);
