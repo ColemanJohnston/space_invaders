@@ -412,4 +412,8 @@ int main( int argc, char* args[] )
 	close();
 
 	return 0;
+<<<<<<< HEAD
 }
+=======
+}*/
+>>>>>>> 6dc8daaa62adc92a20b612b5ab3ddaa9e4c66fc0

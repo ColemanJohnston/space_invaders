@@ -44,7 +44,7 @@ void enemyShip::setY(int y)
 	this->mCollider.y = y;
 }
 
-void enemyShip::move(enemyShip arr[][10])
+void enemyShip::move(enemyShip arr[][10], bool& isInBottom)
 {
     //Move the ship left or right
     if(isShowing)
@@ -72,6 +72,10 @@ void enemyShip::move(enemyShip arr[][10])
 				}
 			}
 		}
+    }
+    if(mPosY > SCREEN_HEIGHT - 20)
+    {
+    	isInBottom = true;
     }
     beam.move();
 }

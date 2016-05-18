@@ -18,7 +18,8 @@ Board::Board()
 	TTF_Init();
 
 	//Initialize SDL
-	if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0 )
+	TTF_Init();
+	if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
 	{
 		printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
 		success = false;
@@ -103,10 +104,14 @@ Board::Board()
 }
 
 //********************************************************************************************************************************
-void Board::playerScore()
+void Board::playerScore(Font &font)
 {
+<<<<<<< HEAD
 	//Font font(renderer);
 	//font.display(250, 250, 35, 35, to_string(score));
+=======
+	font.display(10, 0, 40, 35, "Score: " + to_string(score));
+>>>>>>> 6dc8daaa62adc92a20b612b5ab3ddaa9e4c66fc0
 }
 
 //********************************************************************************************************************************
@@ -134,8 +139,9 @@ void Board::beginMenu()
 
 	Ship playerMenu(renderer);
 	enemyShip enemyStart(renderer, 210, SCREEN_HEIGHT/2),
-			  enemyQuit(renderer,410, SCREEN_HEIGHT/2);
-
+	enemyQuit(renderer,410, SCREEN_HEIGHT/2);
+	Font startFont(renderer);
+	Font quitFont(renderer);
 	enemyStart.initAudio();
 	enemyQuit.initAudio();
 	playerMenu.initAudio();
@@ -174,7 +180,8 @@ void Board::beginMenu()
 		playerMenu.render();
 		enemyStart.render();
 		enemyQuit.render();
-
+		startFont.display(200, 200, 40, 35, "START");
+		quitFont.display(400, 200, 40, 35, "QUIT");
 		SDL_RenderPresent( renderer );
 	}
 }
@@ -199,15 +206,17 @@ void Board::startGameLoop()
 	//Start up SDL and create window
 
 	//Main loop flag
-	bool quit = false;
 
+	bool quit = false;
+	bool isInBottom = false;
+	Font font(renderer);
 	//Event handler
 	SDL_Event e;
 	Font font(renderer);
 	//int score = 0;
 
 	//barrier
-	int XLocation = 100;
+	int XLocation = 113;
 	int Ylocation = 380;
 	for(int i = 0; i < 10; i++)
 	{
@@ -221,7 +230,7 @@ void Board::startGameLoop()
 		XLocation+=5;
 	}
 	
-	XLocation = 250;
+	XLocation = 276;
 	for(int i = 0; i < 10; i++)
 	{
 		for(int j = 0; j < 10; j++)
@@ -234,7 +243,7 @@ void Board::startGameLoop()
 		XLocation+=5;
 	}
 
-	XLocation = 400;
+	XLocation = 439;
 	for(int i = 0; i < 10; i++)
 	{
 		for(int j = 0; j < 10; j++)
@@ -256,7 +265,7 @@ void Board::startGameLoop()
 		}
 	}
 
-	while( !quit )
+	while( !quit && !isInBottom)
 	{
 		if((score + 1 )%101 == 0)
 		{
@@ -272,6 +281,7 @@ void Board::startGameLoop()
 			if( e.type == SDL_QUIT )
 			{
 				quit = true;
+				score = 0;
 			}
 
 			//Handle input for the dot
@@ -285,7 +295,14 @@ void Board::startGameLoop()
 		{
 			for(int j = 0; j < 10; j++)
 			{
-				enemies[i][j].move(enemies);
+				enemies[i][j].move(enemies, isInBottom);
+				/*
+				if(isInBottom)
+				{
+					Font gameOver(renderer);
+					gameOver.display(200, 200, 50 , 50, "GAME OVER");
+				}
+				*/
 			}
 		}
 		//Clear screen
@@ -309,11 +326,16 @@ void Board::startGameLoop()
 		SDL_Rect barriersBox;
 		//Render ship
 		playerShip.render();
+<<<<<<< HEAD
 		//playerScore();
 		font.display(250, 250, 35, 35, to_string(score));
+=======
+		playerScore(font);
+		//font.display(50, 0, 35, 35, "Score: " + to_string(score));
+>>>>>>> 6dc8daaa62adc92a20b612b5ab3ddaa9e4c66fc0
 
 		if(lifes == 3)
-			{
+			   {
 
 				playerShip.render(618, 0);
 				playerShip.render(593, 0);
@@ -392,6 +414,7 @@ void Board::startGameLoop()
 					enemies[i][j].destroy();
 					score++;
 					playerShip.resetBeam();
+					score++;
 				}
 				if(SDL_HasIntersection(&enemyBeam,&shipCollisionBox))
 				{
@@ -402,6 +425,12 @@ void Board::startGameLoop()
 					}
 					enemies[i][j].resetBeam();
 				}
+				/*
+				if(SDL_HasIntersection(&enemies[i][j],&shipCollisionBox))
+				{
+					isInBottom = true;
+				}
+				*/
 				enemies[i][j].render();
 			}
 		}
