@@ -6,6 +6,9 @@
 #include <stdio.h>
 #include <string>
 
+#include <iostream>
+using namespace std;
+
 Ship::Ship()
 {
    //Initialize the offsets
@@ -18,23 +21,26 @@ Ship::Ship()
     mCollider.x = mPosX;
     mCollider.y = mPosY;
     isShowing = true;
-    explosion_sound = Mix_LoadWAV( "./explosion.wav" );
-    Mix_Volume(1,25);
+    //explosion_sound = Mix_LoadWAV( "/explosion.wav" );
+    //Mix_Volume(1,25);
 
     //Initialize the velocity
-    mVelX = 0; 
+    mVelX = 0;
+
+    //Initialize pointer for audio to prevent seg fault
+    explosion_sound = NULL; 
 }
 
 Ship::Ship(SDL_Renderer* renderer)//do NOT try to run default constructor
 {
     this->renderer = renderer;
     //make surface
-    SDL_Surface* surface = IMG_Load("./ship.bmp");
+    SDL_Surface* surface = IMG_Load("./ship.png");
     texture = SDL_CreateTextureFromSurface(renderer,surface);
     SDL_FreeSurface(surface);
 
-    explosion_sound = Mix_LoadWAV( "./explosion.wav" );
-    Mix_Volume(1,25);
+    //explosion_sound = Mix_LoadWAV( "/explosion.wav" );
+    //Mix_Volume(1,25);
 
     //Initialize the offsets
     mPosX = SCREEN_WIDTH / 2;
@@ -51,6 +57,9 @@ Ship::Ship(SDL_Renderer* renderer)//do NOT try to run default constructor
 
     //Initialize the velocity
     mVelX = 0;
+
+    //Initialize pointer for audio to prevent seg fault
+    explosion_sound = NULL;
 }
 
 void Ship::handleEvent( SDL_Event& e )
@@ -185,13 +194,11 @@ void Ship::setRenderer(SDL_Renderer* renderer)
 {
     this->renderer = renderer;
 
-    SDL_Surface* surface = IMG_Load("./ship.bmp");
+    SDL_Surface* surface = IMG_Load("./ship.png");
     texture = SDL_CreateTextureFromSurface(renderer,surface);
     SDL_FreeSurface(surface);
     beam.setRenderer(renderer);
-    //
     
-
 }
 
 void Ship::destroy()
@@ -205,4 +212,28 @@ void Ship::destroy()
     isShowing = false;
     mVelX = 0;
     Mix_PlayChannel( 1, explosion_sound, 0 );
+}
+
+void Ship::reset()
+{
+    //reset the offsets
+    mPosX = SCREEN_WIDTH / 2;
+    mPosY = SCREEN_HEIGHT - 25;
+
+    //reset collision box dimension
+    mCollider.w = SHIP_WIDTH;
+    mCollider.h = SHIP_HEIGHT;
+    mCollider.x = mPosX;
+    mCollider.y = mPosY;
+    isShowing = true;
+
+    //re-initialize the velocity
+    mVelX = 0;    
+}
+
+void Ship::initAudio()
+{
+	explosion_sound = Mix_LoadWAV( "./explosion.wav" );
+    Mix_Volume(1,25);
+    beam.initAudio();	
 }

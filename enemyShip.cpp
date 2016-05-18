@@ -13,14 +13,25 @@ enemyShip::enemyShip():Ship()
 	mCollider.y = mPosY;
 	mVelX = 1;	
 }
-enemyShip::enemyShip(SDL_Renderer* renderer) : Ship(renderer)
+enemyShip::enemyShip(SDL_Renderer* renderer) : Ship()
 {
 	mPosX = 0;
 	mPosY = 0;
 	mCollider.x = mPosX;
 	mCollider.y = mPosY;
 	mVelX = 1;
+	setRenderer(renderer);
 } 
+
+enemyShip::enemyShip(SDL_Renderer * renderer, int posX, int posY): Ship()
+{
+	this->mPosX = posX;
+	this->mPosY = posY;
+	mCollider.x = mPosX;
+	mCollider.y = mPosY;
+	mVelX = 1;
+	setRenderer(renderer);
+}
 
 void enemyShip::setX(int x)
 {
@@ -33,7 +44,7 @@ void enemyShip::setY(int y)
 	this->mCollider.y = y;
 }
 
-void enemyShip::move(enemyShip arr[][10])
+void enemyShip::move(enemyShip arr[][10], bool isInBottom)
 {
     //Move the ship left or right
     if(isShowing)
@@ -51,20 +62,20 @@ void enemyShip::move(enemyShip arr[][10])
 		{
 			for(int j = 0; j < 10; j++)
 			{
-				arr[i][j].mPosX -= mVelX;
-				arr[i][j].mCollider.x = mPosX;
-				arr[i][j].mVelX *= -1;
-				arr[i][j].mPosY += 20;
-				arr[i][j].mCollider.y += 20;
+				if(isShowing)
+				{
+					arr[i][j].mPosX -= mVelX;
+					arr[i][j].mCollider.x = mPosX;
+					arr[i][j].mVelX *= -1;
+					arr[i][j].mPosY += 20;
+					arr[i][j].mCollider.y += 20;
+				}
 			}
 		}
-/*
-        mPosX -= mVelX;
-		mCollider.x = mPosX;
-		mVelX *= -1;
-		mPosY += 20;
-		mCollider.y += 20;
-		*/
+    }
+    if(mPosY > SHIP_HEIGHT)
+    {
+    	isInBottom = true;
     }
     beam.move();
 }
@@ -87,4 +98,21 @@ bool enemyShip::shoot()
 	}
 	else
 		return false;
+}
+
+void enemyShip::reset()
+{
+	//reset the offsets
+    mPosX = 0;
+    mPosY = 0;
+
+    //reset collision box dimension
+    mCollider.w = SHIP_WIDTH;
+    mCollider.h = SHIP_HEIGHT;
+    mCollider.x = mPosX;
+    mCollider.y = mPosY;
+    isShowing = true;
+
+    //re-initialize the velocity
+    mVelX = 1;    
 }

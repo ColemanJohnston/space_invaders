@@ -41,6 +41,8 @@ class Beam
 
 		SDL_Rect getCollisionBox()const {return mCollider;}
 
+		void initAudio();
+
     private:
 		
 		bool isMoving;

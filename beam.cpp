@@ -19,8 +19,8 @@ Beam::Beam()
     mCollider.y = mPosY;
     isMoving = false;
 
-    laser_sound = Mix_LoadWAV( "./laser1.wav" );
-    Mix_Volume(2,35);
+    //laser_sound = Mix_LoadWAV( "./laser1.wav" );
+    //Mix_Volume(2,35);
 
     //Initialize the velocity
     mVelY = 0;       
@@ -41,8 +41,8 @@ Beam::Beam(SDL_Renderer* renderer)//do NOT try to run default constructor
     mCollider.y = mPosY;
     isMoving = false;
 
-    laser_sound = Mix_LoadWAV( "./laser1.wav" );
-    Mix_Volume(2,35);
+    //laser_sound = Mix_LoadWAV( "./laser1.wav" );
+    //Mix_Volume(2,35);
 
     //Initialize the velocity
     mVelY = 0;
@@ -104,5 +104,10 @@ void Beam::destroy()
     isMoving = false;
     mCollider.w = 0;
     mCollider.h = 0;
-    mVelY = 0;
+}
+
+void Beam::initAudio()
+{
+    laser_sound = Mix_LoadWAV( "./laser1.wav" );
+    Mix_Volume(2,35);    
 }

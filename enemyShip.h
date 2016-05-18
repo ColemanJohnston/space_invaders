@@ -12,20 +12,14 @@ class enemyShip : public Ship
 public:
 	enemyShip(SDL_Renderer* renderer);
 	enemyShip();
-	void move(enemyShip arr[][10]);
+	enemyShip(SDL_Renderer* renderer, int posX, int posY);
+	void move(enemyShip arr[][10], bool isInBottom);
 	void setX(int x);
 	void setY(int y);
 	void setRenderer(SDL_Renderer* renderer);
     bool shoot();
+    void reset();
 };
-
-/*class enemyShipGrid
-{
-public:
-	enemyShip enemies[Ship::SHIP_WIDTH][Ship::SHIP_HEIGHT];
-
-};
-*/
 #endif
 
 

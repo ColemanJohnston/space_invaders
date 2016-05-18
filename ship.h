@@ -48,6 +48,10 @@ class Ship
 
 		void resetBeam(){beam.destroy();}
 
+		void reset();
+
+		void initAudio();
+
     protected:
 		//ship needs the renderer from the rest of the class in order to be able to render itself 
 		SDL_Renderer* renderer;
