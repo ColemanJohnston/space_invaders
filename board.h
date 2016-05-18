@@ -10,6 +10,7 @@
 #include <string>
 #include <iostream>
 #include <time.h>
+#include "font.h"
 #include <cstdlib>
 #include <SDL2/SDL_ttf.h>
 
@@ -31,10 +32,11 @@ private:
 	const int SCREEN_WIDTH = 640;
 	const int SCREEN_HEIGHT = 480;
 	int lifes = 3;
+	int score = 0;
 
 public:
 	Board();
-	void playerScore();
+	void playerScore(Font &font);
 	void displayEnemy();
 	void displayPlayerShip();
 	void beginMenu();

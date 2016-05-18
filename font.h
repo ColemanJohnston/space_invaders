@@ -18,8 +18,10 @@ class Font
 		~Font(){SDL_DestroyTexture(Message);}
 
 		//void render();
+		void display(int x, int y, int width, int height, string text, int font);
 		void display(int x, int y, int width, int height, string text);
 		void destroy();
+		void setFontSize(int fontSize);
 
 	protected:
 		SDL_Color color;
@@ -32,5 +34,6 @@ class Font
 		//X and Y position
 		int x;
 		int y;
+		int fontSize;
 };
 #endif
