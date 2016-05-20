@@ -40,7 +40,7 @@ public:
 	void displayEnemy();
 	void displayPlayerShip();
 	void beginMenu();
-	void loseScreen();
+	void gameOver();
 	void winScreen();
 	void startGameLoop();
 	void resetGameLoop();

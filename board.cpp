@@ -105,7 +105,7 @@ Board::Board()
 //********************************************************************************************************************************
 void Board::playerScore(Font &font)
 {
-	font.display(10, 0, 40, 35, "Score: " + to_string(score));
+	font.display(10, 0, 70, 25, "Score: " + to_string(score));
 }
 
 //********************************************************************************************************************************
@@ -131,14 +131,12 @@ void Board::beginMenu()
 {
 	SDL_Event e;
 
-	Ship playerMenu(renderer);
 	enemyShip enemyStart(renderer, 210, SCREEN_HEIGHT/2),
 	enemyQuit(renderer,410, SCREEN_HEIGHT/2);
 	Font startFont(renderer);
 	Font quitFont(renderer);
 	enemyStart.initAudio();
 	enemyQuit.initAudio();
-	playerMenu.initAudio();
 
 	bool quit = false;
 	while(!quit)
@@ -150,18 +148,18 @@ void Board::beginMenu()
 				quit = true;
 			}
 
-			playerMenu.handleEvent( e );
+			playerShip.handleEvent( e );
 		}
 
-		playerMenu.move();
+		playerShip.move();
 		SDL_Rect startCollisionBox = enemyStart.getShipCollisionBox();
 		SDL_Rect quitCollisionBox = enemyQuit.getShipCollisionBox();
-		SDL_Rect tempBeamBox = playerMenu.getBeamBox();
+		SDL_Rect tempBeamBox = playerShip.getBeamBox();
 
 		if(SDL_HasIntersection(&tempBeamBox, &startCollisionBox))
 		{
+			playerShip.resetBeam();
 			startGameLoop();
-			playerMenu.resetBeam();
 		}
 		if(SDL_HasIntersection(&tempBeamBox, &quitCollisionBox))
 		{
@@ -171,7 +169,7 @@ void Board::beginMenu()
 		SDL_SetRenderDrawColor( renderer, 0x00, 0x00, 0x00, 0x00 );
 		SDL_RenderClear( renderer );
 
-		playerMenu.render();
+		playerShip.render();
 		enemyStart.render();
 		enemyQuit.render();
 		startFont.display(200, 200, 40, 35, "START");
@@ -181,9 +179,61 @@ void Board::beginMenu()
 }
 
 //********************************************************************************************************************************
-void Board::loseScreen()
+void Board::gameOver()
 {
+	Font playAgianFont(renderer);
+	Font quitFont(renderer);
+	Font finalScoreFont(renderer);
+	enemyShip enemyAgain(renderer, 210, SCREEN_HEIGHT/2),
+			  enemyQuit(renderer,410, SCREEN_HEIGHT/2);		  
 
+	SDL_Event e;
+
+	enemyAgain.initAudio();
+	enemyQuit.initAudio();
+
+	bool quit = false;
+	while(!quit)
+	{
+		while(SDL_PollEvent( &e) != 0)
+		{
+			if( e.type == SDL_QUIT )
+			{
+				quit = true;
+				exit(0);
+			}
+
+			playerShip.handleEvent( e );
+		}
+
+		playerShip.move();
+		SDL_Rect againCollisionBox = enemyAgain.getShipCollisionBox();
+		SDL_Rect quitCollisionBox = enemyQuit.getShipCollisionBox();
+		SDL_Rect tempBeamBox = playerShip.getBeamBox();
+
+		if(SDL_HasIntersection(&tempBeamBox, &againCollisionBox))
+		{
+			resetGameLoop();
+			playerShip.resetBeam();
+			startGameLoop();
+		}
+		if(SDL_HasIntersection(&tempBeamBox, &quitCollisionBox))
+		{
+			quit = true;
+			exit(0);
+		}
+
+		SDL_SetRenderDrawColor( renderer, 0x00, 0x00, 0x00, 0x00 );
+		SDL_RenderClear( renderer );
+
+		playerShip.render();
+		enemyAgain.render();
+		enemyQuit.render();
+		finalScoreFont.display( 25 , 25 , 145 , 35 , "FINAL SCORE: " + to_string(score) );
+		playAgianFont.display(200, 200, 90, 35, "PLAY AGAIN?");
+		quitFont.display(400, 200, 40, 35, "QUIT");
+		SDL_RenderPresent( renderer );
+	}
 }
 
 //********************************************************************************************************************************
@@ -250,7 +300,8 @@ void Board::startGameLoop()
 	for(int i = 0; i < 10; i++)
 	{
 		for(int j = 0; j < 10; j++)
-		{
+		{	
+			enemies[i][j].reset();
 			enemies[i][j].setX(j * 30);
 			enemies[i][j].setY(i * 30);
 		}
@@ -264,6 +315,7 @@ void Board::startGameLoop()
 			//User requests quit
 			if( e.type == SDL_QUIT )
 			{
+				exit(0);
 				quit = true;
 				score = 0;
 			}
@@ -389,6 +441,10 @@ void Board::startGameLoop()
 					enemies[i][j].destroy();
 					playerShip.resetBeam();
 					score++;
+					if( score != 0 && score % 100 == 0 )
+					{
+						startGameLoop();
+					}
 				}
 				if(SDL_HasIntersection(&enemyBeam,&shipCollisionBox))
 				{
@@ -396,6 +452,8 @@ void Board::startGameLoop()
 					if(lifes == 0)
 					{	
 						playerShip.destroy();
+						playerShip.reset();
+						gameOver();
 					}
 					enemies[i][j].resetBeam();
 				}

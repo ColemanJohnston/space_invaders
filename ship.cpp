@@ -210,7 +210,6 @@ void Ship::destroy()
     mPosX = 2;
     mPosY = 2;
     isShowing = false;
-    mVelX = 0;
     Mix_PlayChannel( 1, explosion_sound, 0 );
 }
 
@@ -226,9 +225,6 @@ void Ship::reset()
     mCollider.x = mPosX;
     mCollider.y = mPosY;
     isShowing = true;
-
-    //re-initialize the velocity
-    mVelX = 0;    
 }
 
 void Ship::initAudio()
