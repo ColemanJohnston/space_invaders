@@ -1,7 +1,6 @@
 #include "barrier.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <stdio.h>
 #include <string>
 Barrier::Barrier()
 {
@@ -11,6 +10,7 @@ Barrier::Barrier()
     mCollider.y = 0;
     isShowing = true;
     explosion_sound = NULL;  
+    renderer = NULL;
 }
 
 Barrier::Barrier(SDL_Renderer* renderer)

@@ -4,7 +4,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
-#include <stdio.h>
 #include <string>
 
 class Barrier
@@ -30,58 +29,74 @@ class Barrier
 		Barrier();
 		//Summary: Default constructor.
 		//Precondition: None.
-		//Postcondition: The variables 
+		//Postcondition: The variables are initialized, but it cannot render to a 
+		//window or play sound. 
 //**********************************************************************************
 		~Barrier(){Mix_FreeChunk( explosion_sound );}
-		//Summary:
-		//Precondition:
-		//Postcondition:
+		//Summary: Destructor. 
+		//Precondition: None.
+		//Postcondition: Frees the memory allocated for the sound chunk.
 //**********************************************************************************
 		void setRenderer(SDL_Renderer* renderer);
-		//Summary:
-		//Precondition:
-		//Postcondition:
+		//Summary: Sets up the object so that it can be rendered to a window.
+		//Precondition: The renderer for the window must be set up prior to running
+		//this function.
+		//Postcondition: The object is ready to be rendered to a window.
 //**********************************************************************************
 		void setX(int x);
-		//Summary:
-		//Precondition:
-		//Postcondition:
+		//Summary: Sets the x position for the barrier.
+		//Precondition: x must be >= 0 or less than the screen width.
+		//Postcondition: The X position for the barrier is set the the variable 
+		//passed in
 //**********************************************************************************
 		void setY(int y);
-		//Summary:
-		//Precondition:
-		//Postcondition:
+		//Summary: Sets the y position for the barrier.
+		//Precondition: y must be >= 0 or less than the screen height.
+		//Postcondition: The y position for the barrier is set the the variable 
+		//passed in
 //**********************************************************************************
 		void render();
-		//Summary:
-		//Precondition:
-		//Postcondition:
+		//Summary: Renders the barrier to the window.
+		//Precondition: The renderer must be set up prior to running this function.
+		//Postcondition: The barrier is rendered to the screen if it has not been
+		//destroyed.
 //**********************************************************************************
 		void destroy();
-		//Summary:
-		//Precondition:
-		//Postcondition:
+		//Summary: Simulates the barrier being destroyed.
+		//Precondition: None.
+		//Postcondition: Makes it so the that barrier cannot collide and doesn't 
+		//render to the screen. 
 //**********************************************************************************
 		SDL_Rect getCollisionBox()const {return mCollider;}
-		//Summary:
-		//Precondition:
-		//Postcondition:
+		//Summary: Getter for the collision box.
+		//Precondition: None.
+		//Postcondition: Returns a copy of the barrier's collision box.
 //**********************************************************************************
 		void reset();
-		//Summary:
-		//Precondition:
-		//Postcondition:
+		//Summary: Resets the object so that it is similar to after the constructor 
+		//was called.
+		//Precondition: None.
+		//Postcondition: The barrier can render to the screen, and has a collision
+		//box that can collide with things again.
 //**********************************************************************************
 		void initAudio();
-		//Summary:
-		//Precondition:
-		//Postcondition:
+		//Summary: Initializes the audio.
+		//Precondition: The audio for the window must be initialized prior to calling
+		//this function.
+		//Postcondition: The audio is now capable of playing.
 //**********************************************************************************
 		
 	private:
+		//flag to indicate whether or not the barrier should be shown on the screen.
 		bool isShowing;
+
+		//Collision box and position indicator.
 		SDL_Rect mCollider;
+
+		//Renderer pointer so that it can render itself to the window.
 		SDL_Renderer* renderer;
+
+		//sound that plays when the barrier is destroyed.
 		Mix_Chunk* explosion_sound;
 };
 #endif
