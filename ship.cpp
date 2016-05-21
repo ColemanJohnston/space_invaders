@@ -29,6 +29,9 @@ Ship::Ship()
 
     //Initialize pointer for audio to prevent seg fault
     explosion_sound = NULL; 
+
+    //Initialize pointer for renderer to prevent seg fault
+    renderer = NULL;
 }
 
 Ship::Ship(SDL_Renderer* renderer)//do NOT try to run default constructor
@@ -60,6 +63,12 @@ Ship::Ship(SDL_Renderer* renderer)//do NOT try to run default constructor
 
     //Initialize pointer for audio to prevent seg fault
     explosion_sound = NULL;
+}
+
+Ship::~Ship()
+{
+	SDL_DestroyTexture(texture); 
+	Mix_FreeChunk( explosion_sound );
 }
 
 void Ship::handleEvent( SDL_Event& e )
@@ -127,68 +136,14 @@ void Ship::render()
 }
 void Ship::render(int x, int y)
 {
+    SDL_Rect rec;
     rec.w = SHIP_WIDTH;
     rec.h = SHIP_HEIGHT;
     rec.x = x;
     rec.y = y;
     SDL_RenderCopy(renderer, texture, 0, &rec);
 }
-/*
-void Ship::renderLife1(int x, int y, bool isShowing)
-{
 
-    if(isShowing)
-    {
-        lifeRec1.w = SHIP_WIDTH;
-        lifeRec1.h = SHIP_HEIGHT;
-        SDL_RenderCopy(renderer, texture, 0, &lifeRec1);  
-    }
-    if(!isShowing)
-    {
-        lifeRec1.w = 0;
-        lifeRec1.h = 0;
-    }
-   // SDL_RenderCopy(renderer, texture, 0, &rec);
-
-}
-void Ship::renderLife2(int x, int y, bool isShowing)
-{
-
-    if(isShowing)
-    {
-        lifeRec2.w = SHIP_WIDTH;
-        lieRec2.h = SHIP_HEIGHT;
-        SDL_RenderCopy(renderer, texture, 0, &lifeRec2);  
-    }
-    if(!isShowing)
-    {
-        lifeRec2.w = 0;
-        lifeRec2.h = 0;
-    }
-   // SDL_RenderCopy(renderer, texture, 0, &rec);
-
-}
-void Ship::renderLife3(int x, int y, bool isShowing)
-{
-    lifeRec3.x = x;
-    lifeRec3.y = y;
-
-    if(isShowing)
-    {
-        lifeRec3.w = SHIP_WIDTH;
-        lifeRec3.h = SHIP_HEIGHT;
-        SDL_RenderCopy(renderer, texture, 0, &lifeRec3);  
-    }
-    if(!isShowing)
-    {
-        lifeRec3.w = 0;
-        lifeRec3.h = 0;
-        SDL_RenderCopy(renderer, texture, 0, &lifeRec3); 
-    }
-   // SDL_RenderCopy(renderer, texture, 0, &rec);
-
-}
-*/
 
 void Ship::setRenderer(SDL_Renderer* renderer)
 {

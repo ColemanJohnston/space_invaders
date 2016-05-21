@@ -215,6 +215,7 @@ void Board::gameOver()
 		{
 			resetGameLoop();
 			playerShip.resetBeam();
+			score = 0;
 			startGameLoop();
 		}
 		if(SDL_HasIntersection(&tempBeamBox, &quitCollisionBox))
@@ -230,7 +231,7 @@ void Board::gameOver()
 		enemyAgain.render();
 		enemyQuit.render();
 		finalScoreFont.display( 25 , 25 , 145 , 35 , "FINAL SCORE: " + to_string(score) );
-		playAgianFont.display(200, 200, 90, 35, "PLAY AGAIN?");
+		playAgianFont.display(180, 200, 90, 35, "PLAY AGAIN?");
 		quitFont.display(400, 200, 40, 35, "QUIT");
 		SDL_RenderPresent( renderer );
 	}
@@ -347,7 +348,7 @@ void Board::startGameLoop()
 		int r;
 		int c;
 
-		if(rand() % 121 == 0)
+		if(rand() % (121 - (score / 10) ) == 0)
 		{
 			do
 			{

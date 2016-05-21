@@ -33,17 +33,18 @@ private:
 	const int SCREEN_HEIGHT = 480;
 	int lifes = 3;
 	int score = 0;
-
-public:
-	Board();
+//***************************************************************
 	void playerScore(Font &font);
 	void displayEnemy();
 	void displayPlayerShip();
-	void beginMenu();
 	void gameOver();
 	void winScreen();
 	void startGameLoop();
 	void resetGameLoop();
+
+public:
+	Board();
 	~Board();
+	void beginMenu();
 };
 #endif
