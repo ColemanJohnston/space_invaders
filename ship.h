@@ -1,7 +1,7 @@
 #ifndef SHIP_H
 #define SHIP_H
 
-#include "beam.h"//class that encasulates the functionality of the beam
+#include "beam.h"//class that encapsulates the functionality of the beam
 #include <SDL2/SDL.h>//graphics
 #include <SDL2/SDL_image.h>//allows us to load image formats
 #include <SDL2/SDL_mixer.h>//allows us to play sound
@@ -22,7 +22,7 @@ class Ship
 		//Summary: Argument constructor includes the renderer that allows the object to render
 		//itself to the screen.
 		//Precondition: The member variables of the object are not initialized.
-		//Postcondition: The member variables are intialized, and the object can render itself to 
+		//Postcondition: The member variables are initialized, and the object can render itself to 
 		//the screen, but cannot play sound until 
 //************************************************************************************************
 		~Ship();
@@ -31,7 +31,7 @@ class Ship
 		//Postcondition: The heap memory that the object is using is set free.
 //************************************************************************************************
 		void handleEvent( SDL_Event& e );
-		//Summmary: Takes key presses and adjusts the ship's velocity or fires a beam.
+		//Summary: Takes key presses and adjusts the ship's velocity or fires a beam.
 		//Precondition: A new event took place and is passed into the function.
 		//Postcondition: The velocity of the ship is changed according to if left and right arrow
 		//keys are pressed and passed into the function. If a space bar event is passed into the
@@ -46,7 +46,7 @@ class Ship
 		SDL_Rect getShipCollisionBox();
 		//Summary: Getter for the ship's collision box.
 		//Precondition: None.
-		//Postconditon: A copy of the ships collision box is passed through the function.
+		//Postcondition: A copy of the ships collision box is passed through the function.
 //***********************************************************************************************
 		SDL_Rect getBeamBox();
 		//Summary: Getter for the collision box of the Beam object associated with the ship.
@@ -55,7 +55,7 @@ class Ship
 		//returned.
 //***********************************************************************************************
 		void render();
-		//Summmary: Renders the ship and its beam to the screen.
+		//Summary: Renders the ship and its beam to the screen.
 		//Precondition: The ship must have a renderer set through the setRenderer function, or 
 		//the overloaded constructor.
 		//Postcondition: If isShowing is true then the ship is rendered to the screen, but if it
@@ -65,7 +65,7 @@ class Ship
 		void render(int x, int y);
 		//Summary: Renders the ship image to a position on the screen.
 		//Precondition: The ship must have a renderer before this function runs.
-		//Postcondition: An image of the ship is rendered to the screeen at the (x,y) position.
+		//Postcondition: An image of the ship is rendered to the screen at the (x,y) position.
 //***********************************************************************************************
 		void setRenderer(SDL_Renderer* renderer);
 		//Summary: Sets up the renderer and texture for the ship objects.

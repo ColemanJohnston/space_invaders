@@ -21,9 +21,7 @@ Ship::Ship()
     mCollider.x = mPosX;
     mCollider.y = mPosY;
     isShowing = true;
-    //explosion_sound = Mix_LoadWAV( "/explosion.wav" );
-    //Mix_Volume(1,25);
-
+   
     //Initialize the velocity
     mVelX = 0;
 
@@ -37,13 +35,10 @@ Ship::Ship()
 Ship::Ship(SDL_Renderer* renderer)//do NOT try to run default constructor
 {
     this->renderer = renderer;
-    //make surface
+    //make surface and initialize texture
     SDL_Surface* surface = IMG_Load("./ship.png");
     texture = SDL_CreateTextureFromSurface(renderer,surface);
     SDL_FreeSurface(surface);
-
-    //explosion_sound = Mix_LoadWAV( "/explosion.wav" );
-    //Mix_Volume(1,25);
 
     //Initialize the offsets
     mPosX = SCREEN_WIDTH / 2;

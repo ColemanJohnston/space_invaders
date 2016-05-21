@@ -1,7 +1,6 @@
 #include "ship.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h> 
-#include <stdio.h>
 #include <string>
 #include "enemyShip.h"
 
@@ -35,11 +34,17 @@ enemyShip::enemyShip(SDL_Renderer * renderer, int posX, int posY): Ship()
 
 void enemyShip::setX(int x)
 {
+	if(x < 0 || x >= SCREEN_WIDTH)
+		x = 0;
+
 	this->mPosX = x;
 	this->mCollider.x = x;
 }
 void enemyShip::setY(int y)
 {
+	if(y < 0 || y >= SCREEN_HEIGHT)
+		y = 0;
+
 	this->mPosY = y;
 	this->mCollider.y = y;
 }
